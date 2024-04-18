@@ -18,8 +18,7 @@ export default function AppStateProvider({
     useState<AnimationConfig>();
   const [shouldRespondToKeyboardCommands, setShouldRespondToKeyboardCommands] =
     useState(true);
-  const [isCommandKOpen, setIsCommandKOpen] =
-    useState(false);
+  
   const [shouldShowBaselineGrid, setShouldShowBaselineGrid] =
     useState(false);
 
@@ -37,8 +36,6 @@ export default function AppStateProvider({
         setNextPhotoAnimation,
         shouldRespondToKeyboardCommands,
         setShouldRespondToKeyboardCommands,
-        isCommandKOpen,
-        setIsCommandKOpen,
         shouldShowBaselineGrid,
         setShouldShowBaselineGrid,
         clearNextPhotoAnimation: () => setNextPhotoAnimation?.(undefined),

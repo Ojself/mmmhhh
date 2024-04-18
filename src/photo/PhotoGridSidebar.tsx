@@ -6,21 +6,16 @@ import { FaTag } from 'react-icons/fa';
 import { IoMdCamera } from 'react-icons/io';
 import { PhotoDateRange, dateRangeForPhotos, photoQuantityText } from '.';
 import { TAG_FAVS, Tags } from '@/tag';
-import PhotoFilmSimulation from '@/simulation/PhotoFilmSimulation';
-import PhotoFilmSimulationIcon from '@/simulation/PhotoFilmSimulationIcon';
-import { FilmSimulations, sortFilmSimulationsWithCount } from '@/simulation';
 import FavsTag from '../tag/FavsTag';
 
 export default function PhotoGridSidebar({
   tags,
   cameras,
-  simulations,
   photosCount,
   photosDateRange,
 }: {
   tags: Tags
   cameras: Cameras
-  simulations: FilmSimulations
   photosCount: number
   photosDateRange?: PhotoDateRange
 }) {
@@ -66,25 +61,6 @@ export default function PhotoGridSidebar({
               hideAppleIcon
               badged
             />)}
-      />}
-      {simulations.length > 0 && <HeaderList
-        title="Films"
-        icon={<PhotoFilmSimulationIcon
-          className="translate-y-[0.5px]"
-        />}
-        items={simulations
-          .sort(sortFilmSimulationsWithCount)
-          .map(({ simulation, count }) =>
-            <div
-              key={simulation}
-              className="translate-x-[-2px]"
-            >
-              <PhotoFilmSimulation
-                simulation={simulation}
-                countOnHover={count}
-                type="text-only"
-              />
-            </div>)}
       />}
       {photosCount > 0 && start
         ? <HeaderList

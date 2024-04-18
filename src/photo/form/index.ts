@@ -11,11 +11,6 @@ import { toFixedNumber } from '@/utility/number';
 import { convertStringToArray } from '@/utility/string';
 import { generateNanoid } from '@/utility/nanoid';
 import {
-  FILM_SIMULATION_FORM_INPUT_OPTIONS,
-  MAKE_FUJIFILM,
-} from '@/vendors/fujifilm';
-import { FilmSimulation } from '@/simulation';
-import {
   BLUR_ENABLED,
   GEO_PRIVACY_ENABLED,
 } from '@/site/config';
@@ -103,12 +98,6 @@ const FORM_METADATA = (
   aspectRatio: { label: 'aspect ratio', readOnly: true },
   make: { label: 'camera make' },
   model: { label: 'camera model' },
-  filmSimulation: {
-    label: 'fujifilm simulation',
-    selectOptions: FILM_SIMULATION_FORM_INPUT_OPTIONS,
-    selectOptionsDefaultLabel: 'Unknown',
-    shouldHide: ({ make }) => make !== MAKE_FUJIFILM,
-  },
   focalLength: { label: 'focal length' },
   focalLengthIn35MmFormat: { label: 'focal length 35mm-equivalent' },
   fNumber: { label: 'aperture' },
@@ -194,7 +183,6 @@ export const convertPhotoToFormData = (
 
 export const convertExifToFormData = (
   data: ExifData,
-  filmSimulation?: FilmSimulation,
 ): Omit<
   Record<keyof PhotoExif, string | undefined>,
   'takenAt' | 'takenAtNaive'
@@ -212,7 +200,6 @@ export const convertExifToFormData = (
     !GEO_PRIVACY_ENABLED ? data.tags?.GPSLatitude?.toString() : undefined,
   longitude:
     !GEO_PRIVACY_ENABLED ? data.tags?.GPSLongitude?.toString() : undefined,
-  filmSimulation,
   ...data.tags?.DateTimeOriginal && {
     takenAt: convertTimestampWithOffsetToPostgresString(
       data.tags.DateTimeOriginal,
@@ -252,7 +239,7 @@ export const convertFormDataToPhotoDbInsert = (
   });
 
   return {
-    ...(photoForm as PhotoFormData & { filmSimulation?: FilmSimulation }),
+    ...(photoForm as PhotoFormData),
     ...(generateId && !photoForm.id) && { id: generateNanoid() },
     // Convert form strings to arrays
     tags: tags.length > 0 ? tags : undefined,

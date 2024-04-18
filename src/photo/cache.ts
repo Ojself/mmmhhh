@@ -17,9 +17,6 @@ import {
   getPhotosTagDateRange,
   getPhotosCameraDateRange,
   getUniqueTagsHidden,
-  getUniqueFilmSimulations,
-  getPhotosFilmSimulationDateRange,
-  getPhotosFilmSimulationCount,
   getPhotosDateRange,
   getPhotosNearId,
 } from '@/services/vercel-postgres';
@@ -33,7 +30,6 @@ const KEY_PHOTO             = 'photo';
 // Field keys
 const KEY_TAGS              = 'tags';
 const KEY_CAMERAS           = 'cameras';
-const KEY_FILM_SIMULATIONS  = 'film-simulations';
 // Type keys
 const KEY_COUNT             = 'count';
 const KEY_HIDDEN            = 'hidden';
@@ -84,14 +80,10 @@ export const revalidateTagsKey = () =>
 export const revalidateCamerasKey = () =>
   revalidateTag(KEY_CAMERAS);
 
-export const revalidateFilmSimulationsKey = () =>
-  revalidateTag(KEY_FILM_SIMULATIONS);
-
 export const revalidateAllKeys = () => {
   revalidatePhotosKey();
   revalidateTagsKey();
   revalidateCamerasKey();
-  revalidateFilmSimulationsKey();
 };
 
 export const revalidateAllKeysAndPaths = () => {
@@ -151,12 +143,6 @@ export const getPhotosCameraCountCached = (
     [KEY_PHOTOS, KEY_COUNT, createCameraKey(...args)],
   )(...args);
 
-export const getPhotosFilmSimulationCountCached =
-  unstable_cache(
-    getPhotosFilmSimulationCount,
-    [KEY_PHOTOS, KEY_FILM_SIMULATIONS, KEY_COUNT],
-  );
-
 export const getPhotosTagDateRangeCached =
   unstable_cache(
     getPhotosTagDateRange,
@@ -167,12 +153,6 @@ export const getPhotosCameraDateRangeCached =
   unstable_cache(
     getPhotosCameraDateRange,
     [KEY_PHOTOS, KEY_CAMERAS, KEY_DATE_RANGE],
-  );
-
-export const getPhotosFilmSimulationDateRangeCached =
-  unstable_cache(
-    getPhotosFilmSimulationDateRange,
-    [KEY_PHOTOS, KEY_FILM_SIMULATIONS, KEY_DATE_RANGE],
   );
 
 export const getPhotoCached = (...args: Parameters<typeof getPhoto>) =>
@@ -199,11 +179,6 @@ export const getUniqueCamerasCached =
     [KEY_PHOTOS, KEY_CAMERAS]
   );
 
-export const getUniqueFilmSimulationsCached =
-  unstable_cache(
-    getUniqueFilmSimulations,
-    [KEY_PHOTOS, KEY_FILM_SIMULATIONS],
-  );
 
 // No store
 

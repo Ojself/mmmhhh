@@ -14,7 +14,6 @@ import PhotoTags from '@/tag/PhotoTags';
 import ShareButton from '@/components/ShareButton';
 import PhotoCamera from '../camera/PhotoCamera';
 import { cameraFromPhoto } from '@/camera';
-import PhotoFilmSimulation from '@/simulation/PhotoFilmSimulation';
 import { sortTags } from '@/tag';
 import AdminPhotoMenu from '@/admin/AdminPhotoMenu';
 import { Suspense } from 'react';
@@ -26,10 +25,8 @@ export default function PhotoLarge({
   priority,
   prefetchShare,
   showCamera = true,
-  showSimulation = true,
   shouldShareTag,
   shouldShareCamera,
-  shouldShareSimulation,
   shouldScrollOnShare,
 }: {
   photo: Photo
@@ -37,10 +34,8 @@ export default function PhotoLarge({
   priority?: boolean
   prefetchShare?: boolean
   showCamera?: boolean
-  showSimulation?: boolean
   shouldShareTag?: boolean
   shouldShareCamera?: boolean
-  shouldShareSimulation?: boolean
   shouldScrollOnShare?: boolean
 }) {
   const tags = sortTags(photo.tags, primaryTag);
@@ -128,10 +123,6 @@ export default function PhotoLarge({
                   <li>{photo.isoFormatted}</li>
                   <li>{photo.exposureCompensationFormatted ?? '0ev'}</li>
                 </ul>
-                {showSimulation && photo.filmSimulation &&
-                  <PhotoFilmSimulation
-                    simulation={photo.filmSimulation}
-                  />}
               </>}
             <div className={clsx(
               'flex gap-x-1.5 gap-y-baseline',
@@ -147,7 +138,6 @@ export default function PhotoLarge({
                   photo,
                   shouldShareTag ? primaryTag : undefined,
                   shouldShareCamera ? camera : undefined,
-                  shouldShareSimulation ? photo.filmSimulation : undefined,
                 )}
                 prefetch={prefetchShare}
                 shouldScroll={shouldScrollOnShare}

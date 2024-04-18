@@ -8,8 +8,6 @@ import PhotoLinks from './PhotoLinks';
 import TagHeader from '@/tag/TagHeader';
 import { Camera } from '@/camera';
 import CameraHeader from '@/camera/CameraHeader';
-import { FilmSimulation } from '@/simulation';
-import FilmSimulationHeader from '@/simulation/FilmSimulationHeader';
 
 export default function PhotoDetailPage({
   photo,
@@ -17,7 +15,6 @@ export default function PhotoDetailPage({
   photosGrid,
   tag,
   camera,
-  simulation,
   count,
   dateRange,
 }: {
@@ -26,7 +23,6 @@ export default function PhotoDetailPage({
   photosGrid?: Photo[]
   tag?: string
   camera?: Camera
-  simulation?: FilmSimulation
   count?: number
   dateRange?: PhotoDateRange
 }) {
@@ -56,18 +52,6 @@ export default function PhotoDetailPage({
               dateRange={dateRange}
             />}
         />}
-      {simulation &&
-        <SiteGrid
-          className="mt-4 mb-8"
-          contentMain={
-            <FilmSimulationHeader
-              simulation={simulation}
-              photos={photos}
-              selectedPhoto={photo}
-              count={count}
-              dateRange={dateRange}
-            />}
-        />}
       <AnimateItems
         className="md:mb-8"
         animateFromAppState
@@ -79,10 +63,8 @@ export default function PhotoDetailPage({
             priority
             prefetchShare
             showCamera={!camera}
-            showSimulation={!simulation}
             shouldShareTag={tag !== undefined}
             shouldShareCamera={camera !== undefined}
-            shouldShareSimulation={simulation !== undefined}
             shouldScrollOnShare={false}
           />,
         ]}
@@ -113,7 +95,6 @@ export default function PhotoDetailPage({
                 photos,
                 tag,
                 camera,
-                simulation,
               }} />
             </div>,
           ]}

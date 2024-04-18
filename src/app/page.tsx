@@ -1,62 +1,55 @@
-import { getPhotosCached, getPhotosCountCached } from '@/photo/cache';
-import AnimateItems from '@/components/AnimateItems';
-import MorePhotos from '@/photo/MorePhotos';
+import { getPhotosCached } from '@/photo/cache';
 import SiteGrid from '@/components/SiteGrid';
 import { generateOgImageMetaForPhotos } from '@/photo';
-import PhotoLarge from '@/photo/PhotoLarge';
+import PhotoGrid from '@/photo/PhotoGrid';
 import PhotosEmptyState from '@/photo/PhotosEmptyState';
+import { MAX_PHOTOS_TO_SHOW_OG } from '@/image-response';
+import { pathForGrid } from '@/site/paths';
+import { Metadata } from 'next';
 import {
   PaginationParams,
   getPaginationForSearchParams,
 } from '@/site/pagination';
-import { pathForRoot } from '@/site/paths';
-import { Metadata } from 'next';
-import { MAX_PHOTOS_TO_SHOW_OG } from '@/image-response';
+import PhotoGridSidebar from '@/photo/PhotoGridSidebar';
+import { getPhotoSidebarDataCached } from '@/photo/data';
 
 export const runtime = 'edge';
 
 export async function generateMetadata(): Promise<Metadata> {
-  // Make homepage queries resilient to error on first time setup
-  const photos = await getPhotosCached({ limit: MAX_PHOTOS_TO_SHOW_OG })
-    .catch(() => []);
+  const photos = await getPhotosCached({ limit: MAX_PHOTOS_TO_SHOW_OG });
   return generateOgImageMetaForPhotos(photos);
 }
 
-export default async function HomePage({ searchParams }: PaginationParams) {
-  const { offset, limit } = getPaginationForSearchParams(searchParams, 12);
+export default async function GridPage({ searchParams }: PaginationParams) {
+  const { offset, limit } = getPaginationForSearchParams(searchParams);
 
   const [
     photos,
-    count,
+    photosCount,
+    tags,
+    cameras,
   ] = await Promise.all([
-    // Make homepage queries resilient to error on first time setup
-    getPhotosCached({ limit }).catch(() => []),
-    getPhotosCountCached().catch(() => 0),
+    getPhotosCached({ limit }),
+    ...getPhotoSidebarDataCached(),
   ]);
-  
-  const showMorePhotos = count > photos.length;
 
+  const showMorePath = photosCount > photos.length
+    ? pathForGrid(offset + 1)
+    : undefined;
+  
   return (
     photos.length > 0
-      ? <div className="space-y-4">
-        <AnimateItems
-          className="space-y-1"
-          duration={0.7}
-          staggerDelay={0.15}
-          distanceOffset={0}
-          staggerOnFirstLoadOnly
-          items={photos.map((photo, index) =>
-            <PhotoLarge
-              key={photo.id}
-              photo={photo}
-              priority={index <= 1}
-            />)}
-        />
-        {showMorePhotos &&
-          <SiteGrid
-            contentMain={<MorePhotos path={pathForRoot(offset + 1)} />}
-          />}
-      </div>
+      ? <SiteGrid
+        contentMain={<PhotoGrid {...{ photos, showMorePath }} />}
+        contentSide={<div className="sticky top-4 space-y-4 mt-[-4px]">
+          <PhotoGridSidebar {...{
+            tags,
+            cameras,
+            photosCount,
+          }} />
+        </div>}
+        sideHiddenOnMobile
+      />
       : <PhotosEmptyState />
   );
 }

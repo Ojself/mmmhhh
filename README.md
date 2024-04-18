@@ -18,7 +18,6 @@ Features
 - Automatic OG image generation
 - CMD-K menu with photo search
 - Experimental support for AI-generated descriptions
-- Support for Fujifilm simulations
 
 <img src="/readme/og-image-share.png" alt="OG Image Preview" width=600 />
 
@@ -94,8 +93,6 @@ Application behavior can be changed by configuring the following environment var
 - `NEXT_PUBLIC_GEO_PRIVACY = 1` disables collection/display of location-based data
 - `NEXT_PUBLIC_IGNORE_PRIORITY_ORDER = 1` prevents `priority_order` field affecting photo order
 - `NEXT_PUBLIC_PUBLIC_API = 1` enables public API available at `/api`
-- `NEXT_PUBLIC_HIDE_REPO_LINK = 1` removes footer link to repo
-- `NEXT_PUBLIC_HIDE_FILM_SIMULATIONS = 1` prevents Fujifilm simulations showing up in `/grid` sidebar
 - `NEXT_PUBLIC_HIDE_EXIF_DATA = 1` hides EXIF data in photo details and OG images (potentially useful for portfolios, which don't focus on photography)
 - `NEXT_PUBLIC_GRID_ASPECT_RATIO = 1.5` sets aspect ratio for grid tiles (defaults to `1`—setting to `0` removes the constraint)
 - `NEXT_PUBLIC_OG_TEXT_ALIGNMENT = BOTTOM` keeps OG image text bottom aligned (default is top)
@@ -198,9 +195,6 @@ FAQ
 
 #### I'm seeing server-side runtime errors when loading a page after updating my fork. What do I do?
 > Navigate to `/admin/configuration` and click "Clear Cache." If this doesn't help, [open an issue](https://github.com/sambecker/exif-photo-blog/issues/new).
-
-#### Why aren't my Fujifilm simulations importing alongside EXIF data?
-> Fujifilm simulation data is stored in vendor-specific Makernote binaries embedded in EXIF data. Under certain circumstances an intermediary may strip out this data. For instance, there is a known issue on iOS where editing an image, e.g., cropping it, causes Makernote data loss. If your simulation data appears to be missing, try importing the original file as it was stored by the camera. Additionally, if you can confirm the simulation mode on camera, you can then edit the photo record and manually select it.
 
 #### Why do my images appear flipped/rotated incorrectly?
 > For a number of reasons, only EXIF orientations: 1, 3, 6, and 8 are supported. Orientations 2, 4, 5, and 7—which make use of mirroring—are not supported.

@@ -5,7 +5,6 @@ import FieldSetWithStatus from '@/components/FieldSetWithStatus';
 import SiteGrid from '@/components/SiteGrid';
 import EntityLink from '@/components/primitives/EntityLink';
 import LabeledIcon from '@/components/primitives/LabeledIcon';
-import PhotoFilmSimulationIcon from '@/simulation/PhotoFilmSimulationIcon';
 import { useAppState } from '@/state';
 import { clsx } from 'clsx/lite';
 import { useState } from 'react';
@@ -137,16 +136,7 @@ export default function ComponentsPage() {
                 Canon Mark III
               </LabeledIcon>
             </div>
-            <div>
-              <EntityLink
-                icon={<PhotoFilmSimulationIcon simulation="astia" />}
-                label="Astia/Soft"
-                type="icon-last"
-                iconWide
-                badged
-                debug={debugComponents}
-              />
-            </div>
+            
             <div>
               <LabeledIcon icon={<FaUserAltSlash />} debug={debugComponents}>
                 Image
@@ -156,15 +146,6 @@ export default function ComponentsPage() {
               <LabeledIcon icon={<FaUserAltSlash />} debug={debugComponents}>
                 Image
               </LabeledIcon>
-            </div>
-            <div>
-              <EntityLink
-                icon={<PhotoFilmSimulationIcon simulation="astia" />}
-                label="Astia/Soft"
-                type="icon-last"
-                badged
-                debug={debugComponents}
-              />
             </div>
             <div>
               <LabeledIcon icon={<FaUserAltSlash />} debug={debugComponents}>

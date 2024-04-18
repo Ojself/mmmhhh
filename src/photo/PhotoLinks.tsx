@@ -8,7 +8,7 @@ import { pathForPhoto } from '@/site/paths';
 import { useAppState } from '@/state';
 import { AnimationConfig } from '@/components/AnimateItems';
 import { Camera } from '@/camera';
-import { FilmSimulation } from '@/simulation';
+
 
 const LISTENER_KEYUP = 'keyup';
 
@@ -20,13 +20,13 @@ export default function PhotoLinks({
   photos,
   tag,
   camera,
-  simulation,
+  
 }: {
   photo: Photo
   photos: Photo[]
   tag?: string
   camera?: Camera
-  simulation?: FilmSimulation
+  
 }) {
   const router = useRouter();
 
@@ -47,7 +47,7 @@ export default function PhotoLinks({
           if (previousPhoto) {
             setNextPhotoAnimation?.(ANIMATION_RIGHT);
             router.push(
-              pathForPhoto(previousPhoto, tag, camera, simulation),
+              pathForPhoto(previousPhoto, tag, camera),
               { scroll: false },
             );
           }
@@ -57,7 +57,7 @@ export default function PhotoLinks({
           if (nextPhoto) {
             setNextPhotoAnimation?.(ANIMATION_LEFT);
             router.push(
-              pathForPhoto(nextPhoto, tag, camera, simulation),
+              pathForPhoto(nextPhoto, tag, camera),
               { scroll: false },
             );
           }
@@ -75,7 +75,7 @@ export default function PhotoLinks({
     nextPhoto,
     tag,
     camera,
-    simulation,
+    
   ]);
   
   return (
@@ -85,7 +85,7 @@ export default function PhotoLinks({
         nextPhotoAnimation={ANIMATION_RIGHT}
         tag={tag}
         camera={camera}
-        simulation={simulation}
+        
         prefetch
       >
         PREV
@@ -95,7 +95,7 @@ export default function PhotoLinks({
         nextPhotoAnimation={ANIMATION_LEFT}
         tag={tag}
         camera={camera}
-        simulation={simulation}
+        
         prefetch
       >
         NEXT

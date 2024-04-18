@@ -1,13 +1,10 @@
 import Switcher from '@/components/Switcher';
 import SwitcherItem from '@/components/SwitcherItem';
-import IconFullFrame from '@/site/IconFullFrame';
 import IconGrid from '@/site/IconGrid';
 import { PATH_ADMIN_PHOTOS, PATH_GRID } from '@/site/paths';
 import { BiLockAlt } from 'react-icons/bi';
-import { useAppState } from '@/state';
-import IconSearch from './IconSearch';
 
-export type SwitcherSelection = 'full-frame' | 'grid' | 'sets' | 'admin';
+export type SwitcherSelection = | 'grid' | 'sets' | 'admin';
 
 export default function ViewSwitcher({
   currentSelection,
@@ -16,17 +13,11 @@ export default function ViewSwitcher({
   currentSelection?: SwitcherSelection
   showAdmin?: boolean
 }) {
-  const { setIsCommandKOpen } = useAppState();
+  
 
   return (
     <div className="flex gap-1 sm:gap-2">
       <Switcher>
-        <SwitcherItem
-          icon={<IconFullFrame />}
-          href="/"
-          active={currentSelection === 'full-frame'}
-          noPadding
-        />
         <SwitcherItem
           icon={<IconGrid />}
           href={PATH_GRID}
@@ -39,12 +30,6 @@ export default function ViewSwitcher({
             href={PATH_ADMIN_PHOTOS}
             active={currentSelection === 'admin'}
           />}
-      </Switcher>
-      <Switcher type="borderless">
-        <SwitcherItem
-          icon={<IconSearch />}
-          onClick={() => setIsCommandKOpen?.(true)}
-        />
       </Switcher>
     </div>
   );

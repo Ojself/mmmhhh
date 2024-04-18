@@ -1,8 +1,6 @@
-import InfoBlock from '@/components/InfoBlock';
 import SiteGrid from '@/components/SiteGrid';
 import SubmitButtonWithStatus from '@/components/SubmitButtonWithStatus';
 import { syncCacheAction } from '@/photo/actions';
-import SiteChecklist from '@/site/SiteChecklist';
 import { BiTrash } from 'react-icons/bi';
 
 export default async function AdminConfigurationPage() {
@@ -22,9 +20,7 @@ export default async function AdminConfigurationPage() {
               </SubmitButtonWithStatus>
             </form>
           </div>
-          <InfoBlock>
-            <SiteChecklist />
-          </InfoBlock>
+          
         </div>}
     />
   );

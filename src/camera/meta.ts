@@ -12,7 +12,6 @@ import {
 
 // Meta functions moved to separate file to avoid
 // dependencies (camelcase-keys) found in photo/index.ts
-// which cause Jest to crash
 
 export const titleForCamera = (
   camera: Camera,

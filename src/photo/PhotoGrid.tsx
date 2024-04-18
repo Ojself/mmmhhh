@@ -4,7 +4,6 @@ import { clsx } from 'clsx/lite';
 import AnimateItems from '@/components/AnimateItems';
 import { Camera } from '@/camera';
 import MorePhotos from '@/photo/MorePhotos';
-import { FilmSimulation } from '@/simulation';
 import { GRID_ASPECT_RATIO, HIGH_DENSITY_GRID } from '@/site/config';
 
 export default function PhotoGrid({
@@ -12,7 +11,6 @@ export default function PhotoGrid({
   selectedPhoto,
   tag,
   camera,
-  simulation,
   fast,
   animate = true,
   animateOnFirstLoadOnly,
@@ -25,7 +23,6 @@ export default function PhotoGrid({
   selectedPhoto?: Photo
   tag?: string
   camera?: Camera
-  simulation?: FilmSimulation
   fast?: boolean
   animate?: boolean
   animateOnFirstLoadOnly?: boolean
@@ -68,7 +65,6 @@ export default function PhotoGrid({
               photo,
               tag,
               camera,
-              simulation,
               selected: photo.id === selectedPhoto?.id,
             }} />
           </div>).concat(additionalTile ?? [])}

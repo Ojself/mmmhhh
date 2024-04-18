@@ -9,8 +9,6 @@ export interface AppStateContext {
   setNextPhotoAnimation?: Dispatch<SetStateAction<AnimationConfig | undefined>>
   shouldRespondToKeyboardCommands?: boolean
   setShouldRespondToKeyboardCommands?: Dispatch<SetStateAction<boolean>>
-  isCommandKOpen?: boolean
-  setIsCommandKOpen?: Dispatch<SetStateAction<boolean>>
   shouldShowBaselineGrid?: boolean
   setShouldShowBaselineGrid?: Dispatch<SetStateAction<boolean>>
   clearNextPhotoAnimation?: () => void

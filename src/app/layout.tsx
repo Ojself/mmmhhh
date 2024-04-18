@@ -12,7 +12,6 @@ import Footer from '@/site/Footer';
 import { Suspense } from 'react';
 import FooterClient from '@/site/FooterClient';
 import NavClient from '@/site/NavClient';
-import CommandK from '@/site/CommandK';
 import { ThemeProvider } from 'next-themes';
 
 import '../site/globals.css';
@@ -93,7 +92,6 @@ export default function RootLayout({
                 <Footer />
               </Suspense>
             </main>
-            <CommandK />
           </ThemeProvider>
           <Analytics debug={false} />
           <SpeedInsights debug={false} />

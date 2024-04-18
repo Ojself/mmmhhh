@@ -3,13 +3,9 @@ import {
   getIdFromStorageUrl,
 } from '@/services/storage';
 import { convertExifToFormData } from '@/photo/form';
-import {
-  getFujifilmSimulationFromMakerNote,
-  isExifForFujifilm,
-} from '@/vendors/fujifilm';
+
 import { ExifData, ExifParserFactory } from 'ts-exif-parser';
 import { PhotoFormData } from './form';
-import { FilmSimulation } from '@/simulation';
 
 export const extractExifDataFromBlobPath = async (
   blobPath: string,
@@ -30,7 +26,6 @@ export const extractExifDataFromBlobPath = async (
     : undefined;
 
   let exifData: ExifData | undefined;
-  let filmSimulation: FilmSimulation | undefined;
 
   if (fileBytes) {
     const parser = ExifParserFactory.create(Buffer.from(fileBytes));
@@ -39,17 +34,6 @@ export const extractExifDataFromBlobPath = async (
     parser.enableBinaryFields(false);
     exifData = parser.parse();
 
-    // Capture film simulation for Fujifilm cameras
-    if (isExifForFujifilm(exifData)) {
-      // Parse exif data again with binary fields
-      // in order to access MakerNote tag
-      parser.enableBinaryFields(true);
-      const exifDataBinary = parser.parse();
-      const makerNote = exifDataBinary.tags?.MakerNote;
-      if (Buffer.isBuffer(makerNote)) {
-        filmSimulation = getFujifilmSimulationFromMakerNote(makerNote);
-      }
-    }
   }
 
   return {
@@ -62,7 +46,7 @@ export const extractExifDataFromBlobPath = async (
           extension,
           url,
         },
-        ...convertExifToFormData(exifData, filmSimulation),
+        ...convertExifToFormData(exifData),
       },
     },
   };

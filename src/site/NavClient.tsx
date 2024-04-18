@@ -36,7 +36,7 @@ export default function NavClient({
 
   const switcherSelectionForPath = (): SwitcherSelection | undefined => {
     if (pathname === PATH_ROOT) {
-      return 'full-frame';
+      return 'grid';
     } else if (isPathGrid(pathname)) {
       return 'grid';
     } else if (isPathProtected(pathname)) {

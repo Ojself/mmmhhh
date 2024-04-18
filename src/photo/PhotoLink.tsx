@@ -7,13 +7,11 @@ import { AnimationConfig } from '../components/AnimateItems';
 import { useAppState } from '@/state';
 import { pathForPhoto } from '@/site/paths';
 import { Camera } from '@/camera';
-import { FilmSimulation } from '@/simulation';
 
 export default function PhotoLink({
   photo,
   tag,
   camera,
-  simulation,
   prefetch,
   nextPhotoAnimation,
   children,
@@ -21,7 +19,6 @@ export default function PhotoLink({
   photo?: Photo
   tag?: string
   camera?: Camera
-  simulation?: FilmSimulation
   prefetch?: boolean
   nextPhotoAnimation?: AnimationConfig
   children: ReactNode
@@ -31,7 +28,7 @@ export default function PhotoLink({
   return (
     photo
       ? <Link
-        href={pathForPhoto(photo, tag, camera, simulation)}
+        href={pathForPhoto(photo, tag, camera)}
         prefetch={prefetch}
         onClick={() => {
           if (nextPhotoAnimation) {

@@ -1,4 +1,3 @@
-import { FilmSimulation } from '@/simulation';
 import { SHOW_EXIF_DATA } from '@/site/config';
 import { ABSOLUTE_PATH_FOR_HOME_IMAGE } from '@/site/paths';
 import { formatDateFromPostgresString } from '@/utility/date';
@@ -35,7 +34,6 @@ export interface PhotoExif {
   exposureCompensation?: number
   latitude?: number
   longitude?: number
-  filmSimulation?: FilmSimulation
   takenAt?: string
   takenAtNaive?: string
 }
