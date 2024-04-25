@@ -1,5 +1,4 @@
 import { OrientationTypes } from 'ts-exif-parser';
-import { formatNumberToFraction } from './number';
 
 const OFFSET_REGEX = /[+-]\d\d:\d\d/;
 
@@ -30,33 +29,6 @@ export const getAspectRatioFromExif = (data: any): number => {
     return height / width;
   default: return width / height;
   }
-  
-  
 };
 
-export const formatFocalLength = (focalLength?: number) =>
-  focalLength ? `${focalLength}mm` : undefined;
 
-export const formatAperture = (aperture?: number) =>
-  aperture ? `ƒ/${aperture}` : undefined;
-
-export const formatIso = (iso?: number) =>
-  iso ? `ISO ${iso}` : undefined;
-
-export const formatExposureTime = (exposureTime = 0) =>
-  exposureTime > 0
-    ? exposureTime < 1
-      ? `1/${Math.floor(1 / exposureTime)}s`
-      : `${exposureTime}s`
-    : undefined;
-
-export const formatExposureCompensation = (exposureCompensation?: number) => {
-  if (
-    exposureCompensation &&
-    Math.abs(exposureCompensation) > 0.01
-  ) {
-    return `${formatNumberToFraction(exposureCompensation)}ev`;
-  } else {
-    return undefined;
-  }
-};
