@@ -12,14 +12,14 @@ export default function PhotoGridSidebar({
   queens,
   cameras,
   photosCount,
-  photosDateRange,
+  
 }: {
   queens: Queens
   cameras: Cameras
   photosCount: number
-  photosDateRange?: PhotoDateRange
+  
 }) {
-  const { start, end } = dateRangeForPhotos(undefined, photosDateRange);
+  
 
   return (
     <>
@@ -62,16 +62,7 @@ export default function PhotoGridSidebar({
               badged
             />)}
       />}
-      {photosCount > 0 && start
-        ? <HeaderList
-          title={photoQuantityText(photosCount, false)}
-          items={start === end
-            ? [start]
-            : [`${end} –`, start]}
-        />
-        : <HeaderList
-          items={[photoQuantityText(photosCount, false)]}
-        />}
+      
     </>
   );
 }
