@@ -175,7 +175,7 @@ export const convertPhotoToFormData = (
 // CREATE FORM DATA: FROM EXIF
 
 export const convertExifToFormData = (
-  data: ExifData,
+  data: any,
 ): Omit<
   Record<keyof PhotoExif, string | undefined>,
   'takenAt' | 'takenAtNaive'

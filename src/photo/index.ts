@@ -19,6 +19,7 @@ export interface PhotoExif {
   aspectRatio: number
   latitude?: number
   longitude?: number
+  queens?: string[]
   takenAt?: string
   takenAtNaive?: string
 }
@@ -32,7 +33,6 @@ export interface PhotoDbInsert extends PhotoExif {
   title?: string
   caption?: string
   semanticDescription?: string
-  queens?: string[]
   locationName?: string
   priorityOrder?: number
   hidden?: boolean
