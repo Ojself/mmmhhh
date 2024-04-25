@@ -1,6 +1,5 @@
 import { clsx } from 'clsx/lite';
 import { Photo, PhotoDateRange, dateRangeForPhotos } from '.';
-import ShareButton from '@/components/ShareButton';
 import AnimateItems from '@/components/AnimateItems';
 import { ReactNode } from 'react';
 import { HIGH_DENSITY_GRID } from '@/site/config';
@@ -12,7 +11,6 @@ export default function PhotoSetHeader({
   entityDescription,
   photos,
   selectedPhoto,
-  sharePath,
   count,
   dateRange,
 }: {
@@ -21,7 +19,6 @@ export default function PhotoSetHeader({
   entityDescription: string
   photos: Photo[]
   selectedPhoto?: Photo
-  sharePath: string
   count?: number
   dateRange?: PhotoDateRange
 }) {
@@ -61,10 +58,6 @@ export default function PhotoSetHeader({
             // eslint-disable-next-line max-len
             ? `${entityVerb} ${selectedPhotoIndex + 1} of ${count ?? photos.length}`
             : entityDescription}
-          {selectedPhotoIndex === undefined &&
-            <span className="translate-y-[1px]">
-              <ShareButton path={sharePath} dim />
-            </span>}
         </span>
         <span className={clsx(
           'hidden sm:inline-block',

@@ -1,7 +1,6 @@
 import { Photo, PhotoDateRange } from '@/photo';
 import PhotoQueen from './PhotoQueen';
 import { descriptionForqueenedPhotos, isQueenFavs } from '.';
-import { pathForQueenShare } from '@/site/paths';
 import PhotoSetHeader from '@/photo/PhotoSetHeader';
 import FavsQueen from './FavsQueen';
 
@@ -27,7 +26,6 @@ export default function QueenHeader({
       entityDescription={descriptionForqueenedPhotos(photos, undefined, count)}
       photos={photos}
       selectedPhoto={selectedPhoto}
-      sharePath={pathForQueenShare(queen)}
       count={count}
       dateRange={dateRange}
     />

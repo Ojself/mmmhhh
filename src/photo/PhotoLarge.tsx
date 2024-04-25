@@ -8,9 +8,8 @@ import SiteGrid from '@/components/SiteGrid';
 import ImageLarge from '@/components/ImageLarge';
 import { clsx } from 'clsx/lite';
 import Link from 'next/link';
-import { pathForPhoto, pathForPhotoShare } from '@/site/paths';
+import { pathForPhoto} from '@/site/paths';
 import PhotoQueens from '@/queen/PhotoQueens';
-import ShareButton from '@/components/ShareButton';
 import PhotoCamera from '../camera/PhotoCamera';
 import { cameraFromPhoto } from '@/camera';
 import { sortQueens } from '@/queen';
@@ -22,18 +21,11 @@ export default function PhotoLarge({
   photo,
   primaryQueen,
   priority,
-  prefetchShare,
-  shouldShareQueen,
-  shouldShareCamera,
-  shouldScrollOnShare,
 }: {
   photo: Photo
   primaryQueen?: string
   priority?: boolean
-  prefetchShare?: boolean
-  shouldShareQueen?: boolean
-  shouldShareCamera?: boolean
-  shouldScrollOnShare?: boolean
+  
 }) {
   const queens = sortQueens(photo.queens, primaryQueen);
 
@@ -126,15 +118,6 @@ export default function PhotoLarge({
               )}>
                 {photo.takenAtNaiveFormatted}
               </div>
-              <ShareButton
-                path={pathForPhotoShare(
-                  photo,
-                  shouldShareQueen ? primaryQueen : undefined,
-                  shouldShareCamera ? camera : undefined,
-                )}
-                prefetch={prefetchShare}
-                shouldScroll={shouldScrollOnShare}
-              />
             </div>
           </div>
         </DivDebugBaselineGrid>}

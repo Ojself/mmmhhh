@@ -1,5 +1,4 @@
 import { Photo, PhotoDateRange } from '@/photo';
-import { pathForCameraShare } from '@/site/paths';
 import PhotoSetHeader from '@/photo/PhotoSetHeader';
 import { Camera, cameraFromPhoto } from '.';
 import PhotoCamera from './PhotoCamera';
@@ -27,7 +26,6 @@ export default function CameraHeader({
         descriptionForCameraPhotos(photos, undefined, count, dateRange)}
       photos={photos}
       selectedPhoto={selectedPhoto}
-      sharePath={pathForCameraShare(camera)}
       count={count}
       dateRange={dateRange}
     />

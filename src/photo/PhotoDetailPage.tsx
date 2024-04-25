@@ -61,10 +61,6 @@ export default function PhotoDetailPage({
             photo={photo}
             primaryQueen={queen}
             priority
-            prefetchShare
-            shouldShareQueen={queen !== undefined}
-            shouldShareCamera={camera !== undefined}
-            shouldScrollOnShare={false}
           />,
         ]}
       />

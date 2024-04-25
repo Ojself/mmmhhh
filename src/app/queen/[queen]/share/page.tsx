@@ -2,7 +2,6 @@ import { GRID_THUMBNAILS_TO_SHOW_MAX } from '@/photo';
 import { PaginationParams } from '@/site/pagination';
 import { generateMetaForQueen } from '@/queen';
 import QueenOverview from '@/queen/QueenOverview';
-import QueenShareModal from '@/queen/QueenShareModal';
 import {
   getPhotosQueenDataCached,
   getPhotosQueenDataCachedWithPagination,
@@ -68,7 +67,6 @@ export default async function Share({
   });
 
   return <>
-    <QueenShareModal {...{ queen, photos, count, dateRange }} />
     <QueenOverview
       {...{ queen, photos, count, dateRange, showMorePath }}
       animateOnFirstLoadOnly
