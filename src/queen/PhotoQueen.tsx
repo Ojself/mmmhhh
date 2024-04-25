@@ -1,25 +1,25 @@
-import { pathForTag } from '@/site/paths';
-import { FaTag } from 'react-icons/fa';
-import { formatTag } from '.';
+import { pathForQueen } from '@/site/paths';
+import { FaChessQueen } from 'react-icons/fa';
+import { formatQueen } from '.';
 import EntityLink, {
   EntityLinkExternalProps,
 } from '@/components/primitives/EntityLink';
 
-export default function PhotoTag({
-  tag,
+export default function PhotoQueen({
+  queen,
   type,
   badged,
   contrast,
   countOnHover,
 }: {
-  tag: string
+  queen: string
   countOnHover?: number
 } & EntityLinkExternalProps) {
   return (
     <EntityLink
-      label={formatTag(tag)}
-      href={pathForTag(tag)}
-      icon={<FaTag
+      label={formatQueen(queen)}
+      href={pathForQueen(queen)}
+      icon={<FaChessQueen
         size={11}
         className="translate-y-[1px]"
       />}

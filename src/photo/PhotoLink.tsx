@@ -10,14 +10,14 @@ import { Camera } from '@/camera';
 
 export default function PhotoLink({
   photo,
-  tag,
+  queen,
   camera,
   prefetch,
   nextPhotoAnimation,
   children,
 }: {
   photo?: Photo
-  tag?: string
+  queen?: string
   camera?: Camera
   prefetch?: boolean
   nextPhotoAnimation?: AnimationConfig
@@ -28,7 +28,7 @@ export default function PhotoLink({
   return (
     photo
       ? <Link
-        href={pathForPhoto(photo, tag, camera)}
+        href={pathForPhoto(photo, queen, camera)}
         prefetch={prefetch}
         onClick={() => {
           if (nextPhotoAnimation) {

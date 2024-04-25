@@ -5,10 +5,10 @@ import { pathForAdminPhotoEdit, pathForPhoto } from '@/site/paths';
 import { deletePhotoAction, toggleFavoritePhotoAction } from '@/photo/actions';
 import { FaRegEdit, FaRegStar, FaStar } from 'react-icons/fa';
 import { Photo, deleteConfirmationTextForPhoto } from '@/photo';
-import { isPathFavs, isPhotoFav } from '@/tag';
 import { usePathname } from 'next/navigation';
 import { BiTrash } from 'react-icons/bi';
 import MoreMenu from '@/components/MoreMenu';
+import { isPathFavs, isPhotoFav } from '@/queen';
 
 export default function AdminPhotoMenuClient({
   photo,

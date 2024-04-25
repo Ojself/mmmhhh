@@ -7,18 +7,18 @@ import { Camera } from '@/camera';
 
 export default function PhotoSmall({
   photo,
-  tag,
+  queen,
   camera,
   selected,
 }: {
   photo: Photo
-  tag?: string
+  queen?: string
   camera?: Camera
   selected?: boolean
 }) {
   return (
     <Link
-      href={pathForPhoto(photo, tag, camera)}
+      href={pathForPhoto(photo, queen, camera)}
       className={clsx(
         'group',
         'flex relative w-full h-full',

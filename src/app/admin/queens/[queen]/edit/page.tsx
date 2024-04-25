@@ -1,48 +1,48 @@
 import AdminChildPage from '@/components/AdminChildPage';
 import { redirect } from 'next/navigation';
-import { getPhotosCached, getPhotosTagCountCached } from '@/photo/cache';
-import TagForm from '@/tag/TagForm';
-import { PATH_ADMIN, PATH_ADMIN_TAGS, pathForTag } from '@/site/paths';
-import PhotoTag from '@/tag/PhotoTag';
+import { getPhotosCached, getPhotosQueenCountCached } from '@/photo/cache';
+import QueenForm from '@/queen/QueenForm';
+import { PATH_ADMIN, PATH_ADMIN_QUEENS, pathForQueen } from '@/site/paths';
+import PhotoQueen from '@/queen/PhotoQueen';
 import { photoLabelForCount } from '@/photo';
 import PhotoLightbox from '@/photo/PhotoLightbox';
-import FavsTag from '@/tag/FavsTag';
-import { isTagFavs } from '@/tag';
+import FavsQueen from '@/queen/FavsQueen';
+import { isQueenFavs } from '@/queen';
 import { clsx } from 'clsx/lite';
 
 const MAX_PHOTO_TO_SHOW = 6;
 
 interface Props {
-  params: { tag: string }
+  params: { queen: string }
 }
 
 export default async function PhotoPageEdit({
-  params: { tag: tagFromParams } }: Props
+  params: { queen: queenFromParams } }: Props
 ) {
-  const tag = decodeURIComponent(tagFromParams);
+  const queen = decodeURIComponent(queenFromParams);
   
   const [
     count,
     photos,
   ] = await Promise.all([
-    getPhotosTagCountCached(tag),
-    getPhotosCached({ tag, limit: MAX_PHOTO_TO_SHOW }),
+    getPhotosQueenCountCached(queen),
+    getPhotosCached({ queen, limit: MAX_PHOTO_TO_SHOW }),
   ]);
 
   if (count === 0) { redirect(PATH_ADMIN); }
 
   return (
     <AdminChildPage
-      backPath={PATH_ADMIN_TAGS}
-      backLabel="Tags"
+      backPath={PATH_ADMIN_QUEENS}
+      backLabel="Queens"
       breadcrumb={<div className={clsx(
         'flex items-center gap-2',
-        // Fix nested EntityLink-in-Badge quirk for tags
+        // Fix nested EntityLink-in-Badge quirk for QUEENS
         '[&>*>*:first-child]:items-center',
       )}>
-        {isTagFavs(tag)
-          ? <FavsTag />
-          : <PhotoTag {...{ tag }} />}
+        {isQueenFavs(queen)
+          ? <FavsQueen />
+          : <PhotoQueen {...{ queen }} />}
         <div className="text-dim uppercase">
           <span>{count}</span>
           <span className="hidden xs:inline-block">
@@ -52,13 +52,13 @@ export default async function PhotoPageEdit({
         </div>
       </div>}
     >
-      <TagForm {...{ tag, photos }}>
+      <QueenForm {...{ queen, photos }}>
         <PhotoLightbox
           {...{ count, photos }}
           maxPhotosToShow={MAX_PHOTO_TO_SHOW}
-          moreLink={pathForTag(tag)}
+          moreLink={pathForQueen(queen)}
         />
-      </TagForm>
+      </QueenForm>
     </AdminChildPage>
   );
 };

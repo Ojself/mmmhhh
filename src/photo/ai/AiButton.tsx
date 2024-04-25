@@ -23,8 +23,8 @@ export default function AiButton({
         return aiContent.isLoadingTitle;
       case 'caption':
         return aiContent.isLoadingCaption;
-      case 'tags':
-        return aiContent.isLoadingTags;
+      case 'queens':
+        return aiContent.isLoadingQueens;
       case 'semantic':
         return aiContent.isLoadingSemantic;
       default:
@@ -35,7 +35,7 @@ export default function AiButton({
     requestFields,
     aiContent.isLoadingCaption,
     aiContent.isLoadingSemantic,
-    aiContent.isLoadingTags,
+    aiContent.isLoadingQueens,
     aiContent.isLoadingTitle,
   ]);
 

@@ -19,7 +19,7 @@ interface PublicApiPhoto {
   url: string
   make?: string
   model?: string
-  tags?: string[]
+  queens?: string[]
   takenAtNaive: string
   src: Record<
     'small' | 'medium' | 'large',
@@ -33,7 +33,7 @@ export const formatPhotoForApi = (photo: Photo): PublicApiPhoto => ({
   url: absolutePathForPhoto(photo),
   ...photo.make && { make: photo.make },
   ...photo.model && { model: photo.model },
-  ...photo.tags.length > 0 && { tags: photo.tags },
+  ...photo.queens.length > 0 && { queens: photo.queens },
   takenAtNaive: formatDateFromPostgresString(photo.takenAtNaive),
   src: {
     small: getNextImageUrlForRequest(photo.url, 200),

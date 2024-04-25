@@ -6,18 +6,18 @@ import { pathForPhoto } from '@/site/paths';
 
 export default function PhotoTiny({
   photo,
-  tag,
+  queen,
   selected,
   className,
 }: {
   photo: Photo
-  tag?: string
+  queen?: string
   selected?: boolean
   className?: string
 }) {
   return (
     <Link
-      href={pathForPhoto(photo, tag)}
+      href={pathForPhoto(photo, queen)}
       className={clsx(
         className,
         'active:brightness-75',

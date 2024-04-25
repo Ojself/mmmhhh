@@ -2,52 +2,52 @@
 
 import SubmitButtonWithStatus from '@/components/SubmitButtonWithStatus';
 import Link from 'next/link';
-import { PATH_ADMIN_TAGS } from '@/site/paths';
+import { PATH_ADMIN_QUEENS } from '@/site/paths';
 import FieldSetWithStatus from '@/components/FieldSetWithStatus';
 import { ReactNode, useMemo, useState } from 'react';
-import { renamePhotoTagGloballyAction } from '@/photo/actions';
+import { renamePhotoQueenGloballyAction } from '@/photo/actions';
 import { parameterize } from '@/utility/string';
 
-export default function TagForm({
-  tag,
+export default function QueenForm({
+  queen,
   children,
 }: {
-  tag: string
+  queen: string
   children?: ReactNode
 }) {
-  const [updatedTagRaw, setUpdatedTagRaw] = useState(tag);
+  const [updatedQueenRaw, setUpdatedQueenRaw] = useState(queen);
 
-  const updatedTag = useMemo(() =>
-    parameterize(updatedTagRaw)
-  , [updatedTagRaw]);
+  const updatedQueen = useMemo(() =>
+    parameterize(updatedQueenRaw)
+  , [updatedQueenRaw]);
 
   const isFormValid = (
-    updatedTag &&
-    updatedTag !== tag
+    updatedQueen &&
+    updatedQueen !== queen
   );
 
   return (
     <form
-      action={renamePhotoTagGloballyAction}
+      action={renamePhotoQueenGloballyAction}
       className="space-y-8"
     >
       <FieldSetWithStatus
-        id="updatedTagRaw"
-        label="New Tag Name"
-        value={updatedTagRaw}
-        onChange={setUpdatedTagRaw}
+        id="updatedQueenRaw"
+        label="New Queen Name"
+        value={updatedQueenRaw}
+        onChange={setUpdatedQueenRaw}
       />
-      {/* Form data: tag to be replaced */}
+      {/* Form data: queen to be replaced */}
       <input
-        name="tag"
-        value={tag}
+        name="queen"
+        value={queen}
         hidden
         readOnly
       />
-      {/* Form data: updated tag */}
+      {/* Form data: updated queen */}
       <input
-        name="updatedTag"
-        value={updatedTag}
+        name="updatedQueen"
+        value={updatedQueen}
         hidden
         readOnly
       />
@@ -55,7 +55,7 @@ export default function TagForm({
       <div className="flex gap-3">
         <Link
           className="button"
-          href={PATH_ADMIN_TAGS}
+          href={PATH_ADMIN_QUEENS}
         >
           Cancel
         </Link>

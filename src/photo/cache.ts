@@ -11,12 +11,11 @@ import {
   getPhotosCount,
   getPhotosCameraCount,
   getPhotosCountIncludingHidden,
-  getPhotosTagCount,
-  getUniqueCameras,
-  getUniqueTags,
-  getPhotosTagDateRange,
+  getPhotosQueenCount,
+  getUniqueQueens,
+  getPhotosQueenDateRange,
   getPhotosCameraDateRange,
-  getUniqueTagsHidden,
+  getUniqueQueensHidden,
   getPhotosDateRange,
   getPhotosNearId,
 } from '@/services/vercel-postgres';
@@ -28,7 +27,7 @@ import { PATHS_ADMIN } from '@/site/paths';
 const KEY_PHOTOS            = 'photos';
 const KEY_PHOTO             = 'photo';
 // Field keys
-const KEY_TAGS              = 'tags';
+const KEY_QUEENS            = 'queens';
 const KEY_CAMERAS           = 'cameras';
 // Type keys
 const KEY_COUNT             = 'count';
@@ -58,31 +57,31 @@ const getPhotosCacheKeyForOption = (
 };
 
 const getPhotosCacheKeys = (options: GetPhotosOptions = {}) => {
-  const tags: string[] = [];
+  const queens: string[] = [];
 
   Object.keys(options).forEach(key => {
-    const tag = getPhotosCacheKeyForOption(
+    const queen = getPhotosCacheKeyForOption(
       options,
       key as keyof GetPhotosOptions
     );
-    if (tag) { tags.push(tag); }
+    if (queen) { queens.push(queen); }
   });
 
-  return tags;
+  return queens;
 };
 
 export const revalidatePhotosKey = () =>
   revalidateTag(KEY_PHOTOS);
 
-export const revalidateTagsKey = () =>
-  revalidateTag(KEY_TAGS);
+export const revalidateQueensKey = () =>
+  revalidateTag(KEY_QUEENS);
 
 export const revalidateCamerasKey = () =>
   revalidateTag(KEY_CAMERAS);
 
 export const revalidateAllKeys = () => {
   revalidatePhotosKey();
-  revalidateTagsKey();
+  revalidateQueensKey();
   revalidateCamerasKey();
 };
 
@@ -129,10 +128,10 @@ export const getPhotosCountIncludingHiddenCached =
     [KEY_PHOTOS, KEY_COUNT, KEY_HIDDEN],
   );
 
-export const getPhotosTagCountCached =
+export const getPhotosQueenCountCached =
   unstable_cache(
-    getPhotosTagCount,
-    [KEY_PHOTOS, KEY_TAGS],
+    getPhotosQueenCount,
+    [KEY_PHOTOS, KEY_QUEENS],
   );
 
 export const getPhotosCameraCountCached = (
@@ -140,13 +139,13 @@ export const getPhotosCameraCountCached = (
 ) =>
   unstable_cache(
     getPhotosCameraCount,
-    [KEY_PHOTOS, KEY_COUNT, createCameraKey(...args)],
+    [KEY_PHOTOS, KEY_COUNT],
   )(...args);
 
-export const getPhotosTagDateRangeCached =
+export const getPhotosQueenDateRangeCached =
   unstable_cache(
-    getPhotosTagDateRange,
-    [KEY_PHOTOS, KEY_TAGS, KEY_DATE_RANGE],
+    getPhotosQueenDateRange,
+    [KEY_PHOTOS, KEY_QUEENS, KEY_DATE_RANGE],
   );
 
 export const getPhotosCameraDateRangeCached =
@@ -161,22 +160,16 @@ export const getPhotoCached = (...args: Parameters<typeof getPhoto>) =>
     [KEY_PHOTOS, KEY_PHOTO]
   )(...args).then(photo => photo ? parseCachedPhotoDates(photo) : undefined);
 
-export const getUniqueTagsCached =
+export const getUniqueQueensCached =
   unstable_cache(
-    getUniqueTags,
-    [KEY_PHOTOS, KEY_TAGS],
+    getUniqueQueens,
+    [KEY_PHOTOS, KEY_QUEENS],
   );
 
-export const getUniqueTagsHiddenCached =
+export const getUniqueQueensHiddenCached =
   unstable_cache(
-    getUniqueTagsHidden,
-    [KEY_PHOTOS, KEY_TAGS, KEY_HIDDEN]
-  );
-
-export const getUniqueCamerasCached =
-  unstable_cache(
-    getUniqueCameras,
-    [KEY_PHOTOS, KEY_CAMERAS]
+    getUniqueQueensHidden,
+    [KEY_PHOTOS, KEY_QUEENS, KEY_HIDDEN]
   );
 
 

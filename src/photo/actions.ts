@@ -3,9 +3,9 @@
 import {
   sqlDeletePhoto,
   sqlInsertPhoto,
-  sqlDeletePhotoTagGlobally,
+  sqlDeletePhotoQueenGlobally,
   sqlUpdatePhoto,
-  sqlRenamePhotoTagGlobally,
+  sqlRenamePhotoQueenGlobally,
   getPhoto,
 } from '@/services/vercel-postgres';
 import {
@@ -22,25 +22,25 @@ import {
   revalidateAdminPaths,
   revalidateAllKeysAndPaths,
   revalidatePhotosKey,
-  revalidateTagsKey,
+  revalidateQueensKey,
 } from '@/photo/cache';
 import {
   PATH_ADMIN_PHOTOS,
-  PATH_ADMIN_TAGS,
+  PATH_ADMIN_QUEENS,
   PATH_ROOT,
   pathForPhoto,
 } from '@/site/paths';
 import { extractExifDataFromBlobPath } from './server';
-import { TAG_FAVS, isTagFavs } from '@/tag';
 import { convertPhotoToPhotoDbInsert } from '.';
 import { safelyRunAdminServerAction } from '@/auth';
 import { AI_IMAGE_QUERIES, AiImageQuery } from './ai';
 import { streamOpenAiImageQuery } from '@/services/openai';
+import { QUEEN_FAVS, isQueenFavs } from '@/queen';
 
 export async function createPhotoAction(formData: FormData) {
   return safelyRunAdminServerAction(async () => {
     const photo = convertFormDataToPhotoDbInsert(formData, true);
-
+    console.log(photo.url, photo.id);
     const updatedUrl = await convertUploadToPhoto(photo.url, photo.id);
   
     if (updatedUrl) { photo.url = updatedUrl; }
@@ -72,10 +72,10 @@ export async function toggleFavoritePhotoAction(
   return safelyRunAdminServerAction(async () => {
     const photo = await getPhoto(photoId);
     if (photo) {
-      const { tags } = photo;
-      photo.tags = tags.some(tag => tag === TAG_FAVS)
-        ? tags.filter(tag => !isTagFavs(tag))
-        : [...tags, TAG_FAVS];
+      const { queens } = photo;
+      photo.queens = queens.some(queen => queen === QUEEN_FAVS)
+        ? queens.filter(queen => !isQueenFavs(queen))
+        : [...queens, QUEEN_FAVS];
       await sqlUpdatePhoto(convertPhotoToPhotoDbInsert(photo));
       revalidateAllKeysAndPaths();
       if (shouldRedirect) {
@@ -108,27 +108,27 @@ export async function deletePhotoFormAction(formData: FormData) {
   );
 };
 
-export async function deletePhotoTagGloballyAction(formData: FormData) {
+export async function deletePhotoQueenGloballyAction(formData: FormData) {
   return safelyRunAdminServerAction(async () => {
-    const tag = formData.get('tag') as string;
+    const queen = formData.get('queen') as string;
 
-    await sqlDeletePhotoTagGlobally(tag);
+    await sqlDeletePhotoQueenGlobally(queen);
 
     revalidatePhotosKey();
     revalidateAdminPaths();
   });
 }
 
-export async function renamePhotoTagGloballyAction(formData: FormData) {
+export async function renamePhotoQueenGloballyAction(formData: FormData) {
   return safelyRunAdminServerAction(async () => {
-    const tag = formData.get('tag') as string;
-    const updatedTag = formData.get('updatedTag') as string;
+    const queen = formData.get('queen') as string;
+    const updatedQueen = formData.get('updatedQueen') as string;
 
-    if (tag && updatedTag && tag !== updatedTag) {
-      await sqlRenamePhotoTagGlobally(tag, updatedTag);
+    if (queen && updatedQueen && queen !== updatedQueen) {
+      await sqlRenamePhotoQueenGlobally(queen, updatedQueen);
       revalidatePhotosKey();
-      revalidateTagsKey();
-      redirect(PATH_ADMIN_TAGS);
+      revalidateQueensKey();
+      redirect(PATH_ADMIN_QUEENS);
     }
   });
 }

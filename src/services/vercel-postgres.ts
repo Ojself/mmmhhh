@@ -7,10 +7,10 @@ import {
   Photo,
   PhotoDateRange,
 } from '@/photo';
-import { Camera, Cameras, createCameraKey } from '@/camera';
+import { Camera, Cameras } from '@/camera';
 import { parameterize } from '@/utility/string';
-import { Tags } from '@/tag';
 import { PRIORITY_ORDER_ENABLED } from '@/site/config';
+import { Queens } from '@/queen';
 
 const PHOTO_DEFAULT_LIMIT = 100;
 
@@ -29,15 +29,7 @@ const sqlCreatePhotosTable = () =>
       title VARCHAR(255),
       caption TEXT,
       semantic_description TEXT,
-      tags VARCHAR(255)[],
-      make VARCHAR(255),
-      model VARCHAR(255),
-      focal_length SMALLINT,
-      focal_length_in_35mm_format SMALLINT,
-      f_number REAL,
-      iso SMALLINT,
-      exposure_time DOUBLE PRECISION,
-      exposure_compensation REAL,
+      queens VARCHAR(255)[],
       location_name VARCHAR(255),
       latitude DOUBLE PRECISION,
       longitude DOUBLE PRECISION,
@@ -71,15 +63,7 @@ export const sqlInsertPhoto = (photo: PhotoDbInsert) =>
       title,
       caption,
       semantic_description,
-      tags,
-      make,
-      model,
-      focal_length,
-      focal_length_in_35mm_format,
-      f_number,
-      iso,
-      exposure_time,
-      exposure_compensation,
+      queens,
       location_name,
       latitude,
       longitude,
@@ -97,15 +81,7 @@ export const sqlInsertPhoto = (photo: PhotoDbInsert) =>
       ${photo.title},
       ${photo.caption},
       ${photo.semanticDescription},
-      ${convertArrayToPostgresString(photo.tags)},
-      ${photo.make},
-      ${photo.model},
-      ${photo.focalLength},
-      ${photo.focalLengthIn35MmFormat},
-      ${photo.fNumber},
-      ${photo.iso},
-      ${photo.exposureTime},
-      ${photo.exposureCompensation},
+      ${convertArrayToPostgresString(photo.queens)},
       ${photo.locationName},
       ${photo.latitude},
       ${photo.longitude},
@@ -126,15 +102,7 @@ export const sqlUpdatePhoto = (photo: PhotoDbInsert) =>
     title=${photo.title},
     caption=${photo.caption},
     semantic_description=${photo.semanticDescription},
-    tags=${convertArrayToPostgresString(photo.tags)},
-    make=${photo.make},
-    model=${photo.model},
-    focal_length=${photo.focalLength},
-    focal_length_in_35mm_format=${photo.focalLengthIn35MmFormat},
-    f_number=${photo.fNumber},
-    iso=${photo.iso},
-    exposure_time=${photo.exposureTime},
-    exposure_compensation=${photo.exposureCompensation},
+    queens=${convertArrayToPostgresString(photo.queens)},
     location_name=${photo.locationName},
     latitude=${photo.latitude},
     longitude=${photo.longitude},
@@ -146,18 +114,18 @@ export const sqlUpdatePhoto = (photo: PhotoDbInsert) =>
     WHERE id=${photo.id}
   `);
 
-export const sqlDeletePhotoTagGlobally = (tag: string) =>
+export const sqlDeletePhotoQueenGlobally = (queen: string) =>
   safelyQueryPhotos(() => sql`
     UPDATE photos
-    SET tags=ARRAY_REMOVE(tags, ${tag})
-    WHERE ${tag}=ANY(tags)
+    SET queens=ARRAY_REMOVE(queens, ${queen})
+    WHERE ${queen}=ANY(queens)
   `);
 
-export const sqlRenamePhotoTagGlobally = (tag: string, updatedTag: string) =>
+export const sqlRenamePhotoQueenGlobally = (queen: string, updatedQueen: string) =>
   safelyQueryPhotos(() => sql`
     UPDATE photos
-    SET tags=ARRAY_REPLACE(tags, ${tag}, ${updatedTag})
-    WHERE ${tag}=ANY(tags)
+    SET queens=ARRAY_REPLACE(queens, ${queen}, ${updatedQueen})
+    WHERE ${queen}=ANY(queens)
   `);
 
 export const sqlDeletePhoto = (id: string) =>
@@ -177,18 +145,15 @@ const sqlGetPhotosCountIncludingHidden = async () => sql`
   SELECT COUNT(*) FROM photos
 `.then(({ rows }) => parseInt(rows[0].count, 10));
 
-const sqlGetPhotosTagCount = async (tag: string) => sql`
+const sqlGetPhotosQueenCount = async (queen: string) => sql`
   SELECT COUNT(*) FROM photos
-  WHERE ${tag}=ANY(tags) AND
+  WHERE ${queen}=ANY(queens) AND
   hidden IS NOT TRUE
 `.then(({ rows }) => parseInt(rows[0].count, 10));
 
-const sqlGetPhotosCameraCount = async (camera: Camera) => sql`
+const sqlGetPhotosCameraCount = async () => sql`
   SELECT COUNT(*) FROM photos
-  WHERE
-  LOWER(REPLACE(make, ' ', '-'))=${parameterize(camera.make, true)} AND
-  LOWER(REPLACE(model, ' ', '-'))=${parameterize(camera.model, true)} AND
-  hidden IS NOT TRUE
+  WHERE hidden IS NOT TRUE
 `.then(({ rows }) => parseInt(rows[0].count, 10));
 
 const sqlGetPhotosDateRange = async () => sql`
@@ -199,58 +164,41 @@ const sqlGetPhotosDateRange = async () => sql`
     ? rows[0] as PhotoDateRange
     : undefined);
 
-const sqlGetPhotosTagDateRange = async (tag: string) => sql`
+const sqlGetPhotosQueenDateRange = async (queen: string) => sql`
   SELECT MIN(taken_at_naive) as start, MAX(taken_at_naive) as end
   FROM photos
-  WHERE ${tag}=ANY(tags) AND
+  WHERE ${queen}=ANY(queens) AND
   hidden IS NOT TRUE
 `.then(({ rows }) => rows[0]?.start && rows[0]?.end
     ? rows[0] as PhotoDateRange
     : undefined);
 
-const sqlGetPhotosCameraDateRange = async (camera: Camera) => sql`
+const sqlGetPhotosCameraDateRange = async () => sql`
   SELECT MIN(taken_at_naive) as start, MAX(taken_at_naive) as end
   FROM photos
-  WHERE
-  LOWER(REPLACE(make, ' ', '-'))=${parameterize(camera.make, true)} AND
-  LOWER(REPLACE(model, ' ', '-'))=${parameterize(camera.model, true)} AND
-  hidden IS NOT TRUE
+  WHERE hidden IS NOT TRUE
 `.then(({ rows }) => rows[0]?.start && rows[0]?.end
     ? rows[0] as PhotoDateRange
     : undefined);
 
-const sqlGetUniqueTags = async () => sql`
-  SELECT DISTINCT unnest(tags) as tag, COUNT(*)
+const sqlGetUniqueQueens = async () => sql`
+  SELECT DISTINCT unnest(queens) as queen, COUNT(*)
   FROM photos
   WHERE hidden IS NOT TRUE
-  GROUP BY tag
-  ORDER BY tag ASC
-`.then(({ rows }): Tags => rows.map(({ tag, count }) => ({
-    tag: tag as string,
+  GROUP BY queen
+  ORDER BY queen ASC
+`.then(({ rows }): Queens => rows.map(({ queen, count }) => ({
+    queen: queen as string,
     count: parseInt(count, 10),
   })));
 
-const sqlGetUniqueTagsHidden = async () => sql`
-  SELECT DISTINCT unnest(tags) as tag, COUNT(*)
+const sqlGetUniqueQueensHidden = async () => sql`
+  SELECT DISTINCT unnest(queens) as queen, COUNT(*)
   FROM photos
-  GROUP BY tag
-  ORDER BY tag ASC
-`.then(({ rows }): Tags => rows.map(({ tag, count }) => ({
-    tag: tag as string,
-    count: parseInt(count, 10),
-  })));
-
-const sqlGetUniqueCameras = async () => sql`
-  SELECT DISTINCT make||' '||model as camera, make, model, COUNT(*)
-  FROM photos
-  WHERE hidden IS NOT TRUE
-  AND trim(make) <> ''
-  AND trim(model) <> ''
-  GROUP BY make, model
-  ORDER BY camera ASC
-`.then(({ rows }): Cameras => rows.map(({ make, model, count }) => ({
-    cameraKey: createCameraKey({ make, model }),
-    camera: { make, model },
+  GROUP BY queen
+  ORDER BY queen ASC
+`.then(({ rows }): Queens => rows.map(({ queen, count }) => ({
+    queen: queen as string,
     count: parseInt(count, 10),
   })));
 
@@ -259,7 +207,7 @@ export type GetPhotosOptions = {
   limit?: number
   offset?: number
   query?: string
-  tag?: string
+  queen?: string
   camera?: Camera
   takenBefore?: Date
   takenAfterInclusive?: Date
@@ -308,8 +256,7 @@ export const getPhotos = async (options: GetPhotosOptions = {}) => {
     limit = PHOTO_DEFAULT_LIMIT,
     offset = 0,
     query,
-    tag,
-    camera,
+    queen,
     takenBefore,
     takenAfterInclusive,
     includeHidden,
@@ -337,16 +284,16 @@ export const getPhotos = async (options: GetPhotosOptions = {}) => {
     wheres.push(`CONCAT(title, ' ', caption, ' ', semantic_description) ILIKE $${valueIndex++}`);
     values.push(`%${query.toLocaleLowerCase()}%`);
   }
-  if (tag) {
-    wheres.push(`$${valueIndex++}=ANY(tags)`);
-    values.push(tag);
+  if (queen) {
+    wheres.push(`$${valueIndex++}=ANY(queens)`);
+    values.push(queen);
   }
-  if (camera) {
+  /* if (camera) {
     wheres.push(`LOWER(REPLACE(make, ' ', '-'))=$${valueIndex++}`);
     wheres.push(`LOWER(REPLACE(model, ' ', '-'))=$${valueIndex++}`);
     values.push(parameterize(camera.make, true));
     values.push(parameterize(camera.model, true));
-  }
+  } */
   
   if (wheres.length > 0) {
     sql.push(`WHERE ${wheres.join(' AND ')}`);
@@ -421,20 +368,18 @@ export const getPhotosCount = () =>
 export const getPhotosCountIncludingHidden = () =>
   safelyQueryPhotos(sqlGetPhotosCountIncludingHidden);
 
-// TAGS
-export const getUniqueTags = () =>
-  safelyQueryPhotos(sqlGetUniqueTags);
-export const getUniqueTagsHidden = () =>
-  safelyQueryPhotos(sqlGetUniqueTagsHidden);
-export const getPhotosTagDateRange = (tag: string) =>
-  safelyQueryPhotos(() => sqlGetPhotosTagDateRange(tag));
-export const getPhotosTagCount = (tag: string) =>
-  safelyQueryPhotos(() => sqlGetPhotosTagCount(tag));
+// QUEENS
+export const getUniqueQueens = () =>
+  safelyQueryPhotos(sqlGetUniqueQueens);
+export const getUniqueQueensHidden = () =>
+  safelyQueryPhotos(sqlGetUniqueQueensHidden);
+export const getPhotosQueenDateRange = (queen: string) =>
+  safelyQueryPhotos(() => sqlGetPhotosQueenDateRange(queen));
+export const getPhotosQueenCount = (queen: string) =>
+  safelyQueryPhotos(() => sqlGetPhotosQueenCount(queen));
 
 // CAMERAS
-export const getUniqueCameras = () =>
-  safelyQueryPhotos(sqlGetUniqueCameras);
-export const getPhotosCameraDateRange = (camera: Camera) =>
-  safelyQueryPhotos(() => sqlGetPhotosCameraDateRange(camera));
-export const getPhotosCameraCount = (camera: Camera) =>
-  safelyQueryPhotos(() => sqlGetPhotosCameraCount(camera));
+export const getPhotosCameraDateRange = () =>
+  safelyQueryPhotos(() => sqlGetPhotosCameraDateRange());
+export const getPhotosCameraCount = () =>
+  safelyQueryPhotos(() => sqlGetPhotosCameraCount());

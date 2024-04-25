@@ -9,24 +9,24 @@ import { GRID_ASPECT_RATIO, HIGH_DENSITY_GRID } from '@/site/config';
 export default function PhotoGrid({
   photos,
   selectedPhoto,
-  tag,
+  queen,
   camera,
   fast,
   animate = true,
   animateOnFirstLoadOnly,
-  staggerOnFirstLoadOnly = true,
+  squeengerOnFirstLoadOnly = true,
   showMorePath,
   additionalTile,
   small,
 }: {
   photos: Photo[]
   selectedPhoto?: Photo
-  tag?: string
+  queen?: string
   camera?: Camera
   fast?: boolean
   animate?: boolean
   animateOnFirstLoadOnly?: boolean
-  staggerOnFirstLoadOnly?: boolean
+  squeengerOnFirstLoadOnly?: boolean
   showMorePath?: string
   additionalTile?: JSX.Element
   small?: boolean
@@ -45,10 +45,10 @@ export default function PhotoGrid({
         )}
         type={animate === false ? 'none' : undefined}
         duration={fast ? 0.3 : undefined}
-        staggerDelay={0.075}
+        squeengerDelay={0.075}
         distanceOffset={40}
         animateOnFirstLoadOnly={animateOnFirstLoadOnly}
-        staggerOnFirstLoadOnly={staggerOnFirstLoadOnly}
+        squeengerOnFirstLoadOnly={squeengerOnFirstLoadOnly}
         items={photos.map(photo =>
           <div
             key={photo.id}
@@ -63,7 +63,7 @@ export default function PhotoGrid({
           >
             <PhotoSmall {...{
               photo,
-              tag,
+              queen,
               camera,
               selected: photo.id === selectedPhoto?.id,
             }} />

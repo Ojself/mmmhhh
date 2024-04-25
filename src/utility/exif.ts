@@ -4,7 +4,7 @@ import { formatNumberToFraction } from './number';
 const OFFSET_REGEX = /[+-]\d\d:\d\d/;
 
 export const getOffsetFromExif = (data: ExifData) =>
-  Object.values(data.tags as any)
+  Object.values(data.queens as any)
     .find((value: any) =>
       typeof value === 'string' &&
       OFFSET_REGEX.test(value)
@@ -12,7 +12,7 @@ export const getOffsetFromExif = (data: ExifData) =>
 
 export const getAspectRatioFromExif = (data: ExifData): number => {
   // Using '||' operator to handle `Orientation` unexpectedly being '0'
-  const orientation = data.tags?.Orientation || OrientationTypes.TOP_LEFT;
+  const orientation = data.queens?.Orientation || OrientationTypes.TOP_LEFT;
 
   const width = data.imageSize?.width ?? 3.0;
   const height = data.imageSize?.height ?? 2.0;

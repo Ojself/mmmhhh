@@ -14,7 +14,7 @@ import {
   BLUR_ENABLED,
   GEO_PRIVACY_ENABLED,
 } from '@/site/config';
-import { TAG_FAVS, doesTagsStringIncludeFavs } from '@/tag';
+import { QUEEN_FAVS, doesQueensStringIncludeFavs } from '@/queen';
 
 type VirtualFields = 'favorite';
 
@@ -27,7 +27,7 @@ export type FieldSetType =
   'checkbox' |
   'textarea';
 
-export type AnnotatedTag = {
+export type AnnotatedQueen = {
   value: string,
   annotation?: string,
   annotationAria?: string,
@@ -49,14 +49,14 @@ type FormMeta = {
   type?: FieldSetType
   selectOptions?: { value: string, label: string }[]
   selectOptionsDefaultLabel?: string
-  tagOptions?: AnnotatedTag[]
+  queenOptions?: AnnotatedQueen[]
 };
 
 const STRING_MAX_LENGTH_SHORT = 255;
 const STRING_MAX_LENGTH_LONG  = 1000;
 
 const FORM_METADATA = (
-  tagOptions?: AnnotatedTag[],
+  queenOptions?: AnnotatedQueen[],
   aiTextGeneration?: boolean,
 ): Record<keyof PhotoFormData, FormMeta> => ({
   title: {
@@ -71,11 +71,11 @@ const FORM_METADATA = (
     shouldHide: ({ title, caption }) =>
       !aiTextGeneration && (!title && !caption),
   },
-  tags: {
-    label: 'tags',
-    tagOptions,
-    validate: tags => doesTagsStringIncludeFavs(tags)
-      ? `'${TAG_FAVS}' is a reserved tag`
+  queens: {
+    label: 'queens',
+    queenOptions,
+    validate: queens => doesQueensStringIncludeFavs(queens)
+      ? `'${QUEEN_FAVS}' is a reserved queen`
       : undefined,
   },
   semanticDescription: {
@@ -96,15 +96,8 @@ const FORM_METADATA = (
   url: { label: 'url', readOnly: true },
   extension: { label: 'extension', readOnly: true },
   aspectRatio: { label: 'aspect ratio', readOnly: true },
-  make: { label: 'camera make' },
-  model: { label: 'camera model' },
-  focalLength: { label: 'focal length' },
-  focalLengthIn35MmFormat: { label: 'focal length 35mm-equivalent' },
-  fNumber: { label: 'aperture' },
-  iso: { label: 'ISO' },
-  exposureTime: { label: 'exposure time' },
-  exposureCompensation: { label: 'exposure compensation' },
-  locationName: { label: 'location name', hide: true },
+  
+  locationName: { label: 'location name', hide: false },
   latitude: { label: 'latitude' },
   longitude: { label: 'longitude' },
   takenAt: { label: 'taken at' },
@@ -139,16 +132,16 @@ export const isFormValid = (formData: Partial<PhotoFormData>) =>
       (validate?.(formData[key]) === undefined) &&
       // eslint-disable-next-line max-len
       (!validateStringMaxLength || (formData[key]?.length ?? 0) <= validateStringMaxLength) &&
-      (key !== 'tags' || !doesTagsStringIncludeFavs(formData.tags ?? ''))
+      (key !== 'queens' || !doesQueensStringIncludeFavs(formData.queens ?? ''))
   );
 
 export const formHasTextContent = ({
   title,
   caption,
-  tags,
+  queens,
   semanticDescription,
 }: Partial<PhotoFormData>) =>
-  Boolean(title || caption || tags || semanticDescription);
+  Boolean(title || caption || queens || semanticDescription);
 
 // CREATE FORM DATA: FROM PHOTO
 
@@ -157,9 +150,9 @@ export const convertPhotoToFormData = (
 ): PhotoFormData => {
   const valueForKey = (key: keyof Photo, value: any) => {
     switch (key) {
-    case 'tags':
+    case 'queens':
       return (value ?? [])
-        .filter((tag: string) => tag !== TAG_FAVS)
+        .filter((queen: string) => queen !== QUEEN_FAVS)
         .join(', ');
     case 'takenAt':
       return value?.toISOString ? value.toISOString() : value;
@@ -175,7 +168,7 @@ export const convertPhotoToFormData = (
     ...photoForm,
     [key]: valueForKey(key as keyof Photo, value),
   }), {
-    favorite: photo.tags.includes(TAG_FAVS) ? 'true' : 'false',
+    favorite: photo.queens.includes(QUEEN_FAVS) ? 'true' : 'false',
   } as PhotoFormData);
 };
 
@@ -188,25 +181,17 @@ export const convertExifToFormData = (
   'takenAt' | 'takenAtNaive'
 > => ({
   aspectRatio: getAspectRatioFromExif(data).toString(),
-  make: data.tags?.Make,
-  model: data.tags?.Model,
-  focalLength: data.tags?.FocalLength?.toString(),
-  focalLengthIn35MmFormat: data.tags?.FocalLengthIn35mmFormat?.toString(),
-  fNumber: data.tags?.FNumber?.toString(),
-  iso: data.tags?.ISO?.toString(),
-  exposureTime: data.tags?.ExposureTime?.toString(),
-  exposureCompensation: data.tags?.ExposureCompensation?.toString(),
   latitude:
-    !GEO_PRIVACY_ENABLED ? data.tags?.GPSLatitude?.toString() : undefined,
+    !GEO_PRIVACY_ENABLED ? data.queens?.GPSLatitude?.toString() : undefined,
   longitude:
-    !GEO_PRIVACY_ENABLED ? data.tags?.GPSLongitude?.toString() : undefined,
-  ...data.tags?.DateTimeOriginal && {
+    !GEO_PRIVACY_ENABLED ? data.queens?.GPSLongitude?.toString() : undefined,
+  ...data.queens?.DateTimeOriginal && {
     takenAt: convertTimestampWithOffsetToPostgresString(
-      data.tags.DateTimeOriginal,
+      data.queens.DateTimeOriginal,
       getOffsetFromExif(data),
     ),
     takenAtNaive:
-      convertTimestampToNaivePostgresString(data.tags.DateTimeOriginal),
+      convertTimestampToNaivePostgresString(data.queens.DateTimeOriginal),
   },
 });
 
@@ -220,9 +205,9 @@ export const convertFormDataToPhotoDbInsert = (
     ? Object.fromEntries(formData) as PhotoFormData
     : formData;
 
-  const tags = convertStringToArray(photoForm.tags) ?? [];
+  const queens = convertStringToArray(photoForm.queens) ?? [];
   if (photoForm.favorite === 'true') {
-    tags.push(TAG_FAVS);
+    queens.push(QUEEN_FAVS);
   }
   
   // Parse FormData:
@@ -242,27 +227,17 @@ export const convertFormDataToPhotoDbInsert = (
     ...(photoForm as PhotoFormData),
     ...(generateId && !photoForm.id) && { id: generateNanoid() },
     // Convert form strings to arrays
-    tags: tags.length > 0 ? tags : undefined,
+    queens: queens.length > 0 ? queens : undefined,
     // Convert form strings to numbers
     aspectRatio: toFixedNumber(parseFloat(photoForm.aspectRatio), 6),
-    focalLength: photoForm.focalLength
-      ? parseInt(photoForm.focalLength)
-      : undefined,
-    focalLengthIn35MmFormat: photoForm.focalLengthIn35MmFormat
-      ? parseInt(photoForm.focalLengthIn35MmFormat)
-      : undefined,
-    fNumber: photoForm.fNumber
-      ? parseFloat(photoForm.fNumber)
-      : undefined,
+    
     latitude: photoForm.latitude
       ? parseFloat(photoForm.latitude)
       : undefined,
     longitude: photoForm.longitude
       ? parseFloat(photoForm.longitude)
       : undefined,
-    iso: photoForm.iso
-      ? parseInt(photoForm.iso)
-      : undefined,
+    
     exposureTime: photoForm.exposureTime
       ? parseFloat(photoForm.exposureTime)
       : undefined,

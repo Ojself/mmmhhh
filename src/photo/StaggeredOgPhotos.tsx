@@ -8,7 +8,7 @@ const DEFAULT_MAX_CONCURRENCY = 3;
 
 type PhotoLoadingState = Record<string, OGLoadingState>;
 
-export default function StaggeredOgPhotos({
+export default function SqueengeredOgPhotos({
   photos,
   maxConcurrency = DEFAULT_MAX_CONCURRENCY,
 }: {

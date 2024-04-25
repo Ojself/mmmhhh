@@ -24,14 +24,6 @@ export const MAX_PHOTO_UPLOAD_SIZE_IN_BYTES = 50_000_000;
 // Core EXIF data
 export interface PhotoExif {
   aspectRatio: number
-  make?: string
-  model?: string
-  focalLength?: number
-  focalLengthIn35MmFormat?: number
-  fNumber?: number
-  iso?: number
-  exposureTime?: number
-  exposureCompensation?: number
   latitude?: number
   longitude?: number
   takenAt?: string
@@ -47,7 +39,7 @@ export interface PhotoDbInsert extends PhotoExif {
   title?: string
   caption?: string
   semanticDescription?: string
-  tags?: string[]
+  queens?: string[]
   locationName?: string
   priorityOrder?: number
   hidden?: boolean
@@ -56,11 +48,11 @@ export interface PhotoDbInsert extends PhotoExif {
 }
 
 // Raw db response
-export interface PhotoDb extends Omit<PhotoDbInsert, 'takenAt' | 'tags'> {
+export interface PhotoDb extends Omit<PhotoDbInsert, 'takenAt' | 'queens'> {
   updatedAt: Date
   createdAt: Date
   takenAt: Date
-  tags: string[]
+  queens: string[]
 }
 
 // Parsed db response
@@ -69,8 +61,6 @@ export interface Photo extends PhotoDb {
   focalLengthIn35MmFormatFormatted?: string
   fNumberFormatted?: string
   isoFormatted?: string
-  exposureTimeFormatted?: string
-  exposureCompensationFormatted?: string
   takenAtNaiveFormatted: string
 }
 
@@ -80,19 +70,7 @@ export const parsePhotoFromDb = (photoDbRaw: PhotoDb): Photo => {
   ) as unknown as PhotoDb;
   return {
     ...photoDb,
-    tags: photoDb.tags ?? [],
-    focalLengthFormatted:
-      formatFocalLength(photoDb.focalLength),
-    focalLengthIn35MmFormatFormatted:
-      formatFocalLength(photoDb.focalLengthIn35MmFormat),
-    fNumberFormatted:
-      formatAperture(photoDb.fNumber),
-    isoFormatted:
-      formatIso(photoDb.iso),
-    exposureTimeFormatted:
-      formatExposureTime(photoDb.exposureTime),
-    exposureCompensationFormatted:
-      formatExposureCompensation(photoDb.exposureCompensation),
+    queens: photoDb.queens ?? [],
     takenAtNaiveFormatted:
       formatDateFromPostgresString(photoDb.takenAtNaive),
   };
@@ -116,7 +94,6 @@ export const convertPhotoToPhotoDbInsert = (
 });
 
 export const photoStatsAsString = (photo: Photo) => [
-  photo.model,
   photo.focalLengthFormatted,
   photo.fNumberFormatted,
   photo.isoFormatted,
@@ -232,8 +209,7 @@ export const dateRangeForPhotos = (
 };
 
 const photoHasCameraData = (photo: Photo) =>
-  Boolean(photo.make) &&
-  Boolean(photo.model);
+  Boolean(photo.make);
 
 const photoHasExifData = (photo: Photo) =>
   Boolean(photo.focalLength) ||

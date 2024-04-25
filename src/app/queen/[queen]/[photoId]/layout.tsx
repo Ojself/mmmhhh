@@ -11,16 +11,16 @@ import {
 } from '@/site/paths';
 import PhotoDetailPage from '@/photo/PhotoDetailPage';
 import { getPhotoCached } from '@/photo/cache';
-import { getPhotosTagDataCached } from '@/tag/data';
+import { getPhotosQueenDataCached } from '@/queen/data';
 import { ReactNode } from 'react';
 
-interface PhotoTagProps {
-  params: { photoId: string, tag: string }
+interface PhotoQueenProps {
+  params: { photoId: string, queen: string }
 }
 
 export async function generateMetadata({
-  params: { photoId, tag },
-}: PhotoTagProps): Promise<Metadata> {
+  params: { photoId, queen },
+}: PhotoQueenProps): Promise<Metadata> {
   const photo = await getPhotoCached(photoId);
 
   if (!photo) { return {}; }
@@ -28,7 +28,7 @@ export async function generateMetadata({
   const title = titleForPhoto(photo);
   const description = descriptionForPhoto(photo);
   const images = absolutePathForPhotoImage(photo);
-  const url = absolutePathForPhoto(photo, tag);
+  const url = absolutePathForPhoto(photo, queen);
 
   return {
     title,
@@ -48,10 +48,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function PhotoTagPage({
-  params: { photoId, tag },
+export default async function PhotoQueenPage({
+  params: { photoId, queen },
   children,
-}: PhotoTagProps & { children: ReactNode }) {
+}: PhotoQueenProps & { children: ReactNode }) {
   const photo = await getPhotoCached(photoId);
 
   if (!photo) { redirect(PATH_ROOT); }
@@ -60,10 +60,10 @@ export default async function PhotoTagPage({
     photos,
     count,
     dateRange,
-  ] = await getPhotosTagDataCached({ tag });
+  ] = await getPhotosQueenDataCached({ queen });
 
   return <>
     {children}
-    <PhotoDetailPage {...{ photo, photos, tag, count, dateRange }} />
+    <PhotoDetailPage {...{ photo, photos, queen, count, dateRange }} />
   </>;
 }

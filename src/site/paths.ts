@@ -13,18 +13,18 @@ export const PATH_OG        = '/og';
 
 // Path prefixes
 export const PREFIX_PHOTO           = '/p';
-export const PREFIX_TAG             = '/tag';
+export const PREFIX_TAG             = '/queen';
 export const PREFIX_CAMERA          = '/shot-on';
 
 // Dynamic paths
 const PATH_PHOTO_DYNAMIC            = `${PREFIX_PHOTO}/[photoId]`;
-const PATH_TAG_DYNAMIC              = `${PREFIX_TAG}/[tag]`;
+const PATH_TAG_DYNAMIC              = `${PREFIX_TAG}/[queen]`;
 const PATH_CAMERA_DYNAMIC           = `${PREFIX_CAMERA}/[make]/[model]`;
 
 // Admin paths
 export const PATH_ADMIN_PHOTOS        = `${PATH_ADMIN}/photos`;
 export const PATH_ADMIN_UPLOADS       = `${PATH_ADMIN}/uploads`;
-export const PATH_ADMIN_TAGS          = `${PATH_ADMIN}/tags`;
+export const PATH_ADMIN_QUEENS          = `${PATH_ADMIN}/queens`;
 export const PATH_ADMIN_CONFIGURATION = `${PATH_ADMIN}/configuration`;
 export const PATH_ADMIN_BASELINE      = `${PATH_ADMIN}/baseline`;
 
@@ -42,7 +42,7 @@ export const PATHS_ADMIN = [
   PATH_ADMIN,
   PATH_ADMIN_PHOTOS,
   PATH_ADMIN_UPLOADS,
-  PATH_ADMIN_TAGS,
+  PATH_ADMIN_QUEENS,
   PATH_ADMIN_CONFIGURATION,
 ];
 
@@ -77,8 +77,8 @@ export const pathForAdminUploadUrl = (url: string) =>
 export const pathForAdminPhotoEdit = (photo: PhotoOrPhotoId) =>
   `${PATH_ADMIN_PHOTOS}/${getPhotoId(photo)}/${EDIT}`;
 
-export const pathForAdminTagEdit = (tag: string) =>
-  `${PATH_ADMIN_TAGS}/${tag}/${EDIT}`;
+export const pathForAdminQueenEdit = (queen: string) =>
+  `${PATH_ADMIN_QUEENS}/${queen}/${EDIT}`;
 
 export const pathForOg = (next?: number) =>
   pathWithNext(PATH_OG, next);
@@ -90,30 +90,30 @@ const getPhotoId = (photoOrPhotoId: PhotoOrPhotoId) =>
 
 export const pathForPhoto = (
   photo: PhotoOrPhotoId,
-  tag?: string,
+  queen?: string,
   camera?: Camera,
 ) =>
-  tag
-    ? `${pathForTag(tag)}/${getPhotoId(photo)}`
+  queen
+    ? `${pathForQueen(queen)}/${getPhotoId(photo)}`
     : camera
       ? `${pathForCamera(camera)}/${getPhotoId(photo)}`
       : `${PREFIX_PHOTO}/${getPhotoId(photo)}`;
 
 export const pathForPhotoShare = (
   photo: PhotoOrPhotoId,
-  tag?: string,
+  queen?: string,
   camera?: Camera,
 ) =>
-  `${pathForPhoto(photo, tag, camera)}/${SHARE}`;
+  `${pathForPhoto(photo, queen, camera)}/${SHARE}`;
 
-export const pathForTag = (tag: string, next?: number) =>
+export const pathForQueen = (queen: string, next?: number) =>
   pathWithNext(
-    `${PREFIX_TAG}/${tag}`,
+    `${PREFIX_TAG}/${queen}`,
     next,
   );
 
-export const pathForTagShare = (tag: string) =>
-  `${pathForTag(tag)}/${SHARE}`;
+export const pathForQueenShare = (queen: string) =>
+  `${pathForQueen(queen)}/${SHARE}`;
 
 export const pathForCamera = ({ make, model }: Camera, next?: number) =>
   pathWithNext(
@@ -126,13 +126,13 @@ export const pathForCameraShare = (camera: Camera) =>
 
 export const absolutePathForPhoto = (
   photo: PhotoOrPhotoId,
-  tag?: string,
+  queen?: string,
   camera?: Camera,
 ) =>
-  `${BASE_URL}${pathForPhoto(photo, tag, camera)}`;
+  `${BASE_URL}${pathForPhoto(photo, queen, camera)}`;
 
-export const absolutePathForTag = (tag: string) =>
-  `${BASE_URL}${pathForTag(tag)}`;
+export const absolutePathForQueen = (queen: string) =>
+  `${BASE_URL}${pathForQueen(queen)}`;
 
 export const absolutePathForCamera= (camera: Camera) =>
   `${BASE_URL}${pathForCamera(camera)}`;
@@ -140,8 +140,8 @@ export const absolutePathForCamera= (camera: Camera) =>
 export const absolutePathForPhotoImage = (photo: PhotoOrPhotoId) =>
   `${absolutePathForPhoto(photo)}/image`;
 
-export const absolutePathForTagImage = (tag: string) =>
-  `${absolutePathForTag(tag)}/image`;
+export const absolutePathForQueenImage = (queen: string) =>
+  `${absolutePathForQueen(queen)}/image`;
 
 export const absolutePathForCameraImage= (camera: Camera) =>
   `${absolutePathForCamera(camera)}/image`;
@@ -154,20 +154,20 @@ export const isPathPhoto = (pathname = '') =>
 export const isPathPhotoShare = (pathname = '') =>
   new RegExp(`^${PREFIX_PHOTO}/[^/]+/${SHARE}/?$`).test(pathname);
 
-// tag/[tag]
-export const isPathTag = (pathname = '') =>
+// queen/[queen]
+export const isPathQueen = (pathname = '') =>
   new RegExp(`^${PREFIX_TAG}/[^/]+/?$`).test(pathname);
 
-// tag/[tag]/share
-export const isPathTagShare = (pathname = '') =>
+// queen/[queen]/share
+export const isPathQueenShare = (pathname = '') =>
   new RegExp(`^${PREFIX_TAG}/[^/]+/${SHARE}/?$`).test(pathname);
 
-// tag/[tag]/[photoId]
-export const isPathTagPhoto = (pathname = '') =>
+// queen/[queen]/[photoId]
+export const isPathQueenPhoto = (pathname = '') =>
   new RegExp(`^${PREFIX_TAG}/[^/]+/[^/]+/?$`).test(pathname);
 
-// tag/[tag]/[photoId]/share
-export const isPathTagPhotoShare = (pathname = '') =>
+// queen/[queen]/[photoId]/share
+export const isPathQueenPhotoShare = (pathname = '') =>
   new RegExp(`^${PREFIX_TAG}/[^/]+/[^/]+/${SHARE}/?$`).test(pathname);
 
 // shot-on/[make]/[model]
@@ -206,16 +206,16 @@ export const isPathProtected = (pathname?: string) =>
 
 export const getPathComponents = (pathname = ''): {
   photoId?: string
-  tag?: string
+  queen?: string
   camera?: Camera
 } => {
   const photoIdFromPhoto = pathname.match(
     new RegExp(`^${PREFIX_PHOTO}/([^/]+)`))?.[1];
-  const photoIdFromTag = pathname.match(
+  const photoIdFromQueen = pathname.match(
     new RegExp(`^${PREFIX_TAG}/[^/]+/((?!${SHARE})[^/]+)`))?.[1];
   const photoIdFromCamera = pathname.match(
     new RegExp(`^${PREFIX_CAMERA}/[^/]+/[^/]+/((?!${SHARE})[^/]+)`))?.[1];
-  const tag = pathname.match(
+  const queen = pathname.match(
     new RegExp(`^${PREFIX_TAG}/([^/]+)`))?.[1];
   const cameraMake = pathname.match(
     new RegExp(`^${PREFIX_CAMERA}/([^/]+)`))?.[1];
@@ -229,33 +229,33 @@ export const getPathComponents = (pathname = ''): {
   return {
     photoId: (
       photoIdFromPhoto ||
-      photoIdFromTag ||
+      photoIdFromQueen ||
       photoIdFromCamera
     ),
-    tag,
+    queen,
     camera,
   };
 };
 
 export const getEscapePath = (pathname?: string) => {
-  const { photoId, tag, camera } = getPathComponents(pathname);
+  const { photoId, queen, camera } = getPathComponents(pathname);
   if (
     (photoId && isPathPhoto(pathname)) ||
-    (tag && isPathTag(pathname)) ||
+    (queen && isPathQueen(pathname)) ||
     (camera && isPathCamera(pathname))
   ) {
     return PATH_GRID;
-  } else if (photoId && isPathTagPhotoShare(pathname)) {
-    return pathForPhoto(photoId, tag);
+  } else if (photoId && isPathQueenPhotoShare(pathname)) {
+    return pathForPhoto(photoId, queen);
   } else if (photoId && isPathCameraPhotoShare(pathname)) {
     return pathForPhoto(photoId, undefined, camera);
   } else if (photoId && isPathPhotoShare(pathname)) {
     return pathForPhoto(photoId);
-  } else if (tag && (
-    isPathTagPhoto(pathname) ||
-    isPathTagShare(pathname)
+  } else if (queen && (
+    isPathQueenPhoto(pathname) ||
+    isPathQueenShare(pathname)
   )) {
-    return pathForTag(tag);
+    return pathForQueen(queen);
   } else if (camera && (
     isPathCameraPhoto(pathname) ||
     isPathCameraShare(pathname)

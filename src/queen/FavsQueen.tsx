@@ -1,12 +1,12 @@
 import { FaStar } from 'react-icons/fa';
-import { TAG_FAVS } from '.';
-import { pathForTag } from '@/site/paths';
+import { QUEEN_FAVS } from '.';
+import { pathForQueen } from '@/site/paths';
 import { clsx } from 'clsx/lite';
 import EntityLink, {
   EntityLinkExternalProps,
 } from '@/components/primitives/EntityLink';
 
-export default function FavsTag({
+export default function FavsQueen({
   type,
   badged,
   contrast,
@@ -19,14 +19,14 @@ export default function FavsTag({
       label={
         badged
           ? <span className="inline-flex gap-1">
-            {TAG_FAVS}
+            {QUEEN_FAVS}
             <FaStar
               size={10}
               className="text-amber-500"
             />
           </span>
-          : TAG_FAVS}
-      href={pathForTag(TAG_FAVS)}
+          : QUEEN_FAVS}
+      href={pathForQueen(QUEEN_FAVS)}
       icon={!badged &&
         <FaStar
           size={12}

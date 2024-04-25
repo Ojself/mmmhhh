@@ -1,4 +1,4 @@
-import { AnnotatedTag } from '@/photo/form';
+import { AnnotatedQueen } from '@/photo/form';
 import { convertStringToArray, parameterize } from '@/utility/string';
 import { clsx } from 'clsx/lite';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -6,10 +6,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 const KEY_KEYDOWN = 'keydown';
 const CREATE_LABEL = 'Create';
 
-const ARIA_ID_TAG_CONTROL = 'tag-control';
-const ARIA_ID_TAG_OPTIONS = 'tag-options';
+const ARIA_ID_TAG_CONTROL = 'queen-control';
+const ARIA_ID_TAG_OPTIONS = 'queen-options';
 
-export default function TagInput({
+export default function QueenInput({
   id,
   name,
   value = '',
@@ -21,7 +21,7 @@ export default function TagInput({
   id?: string
   name: string
   value?: string
-  options?: AnnotatedTag[]
+  options?: AnnotatedQueen[]
   onChange?: (value: string) => void
   className?: string
   readOnly?: boolean
@@ -48,7 +48,7 @@ export default function TagInput({
     !optionValues.includes(inputTextFormatted) &&
     !selectedOptions.includes(inputTextFormatted);
 
-  const optionsFiltered = useMemo<AnnotatedTag[]>(() =>
+  const optionsFiltered = useMemo<AnnotatedQueen[]>(() =>
     (isInputTextUnique
       ? [{ value: `${CREATE_LABEL} "${inputTextFormatted}"` }]
       : []
@@ -215,9 +215,9 @@ export default function TagInput({
         className="sr-only mb-3 text-dim"
       >
         {selectedOptions.length === 0
-          ? 'No tags selected'
+          ? 'No queens selected'
           : selectedOptions.join(', ') +
-            ` tag${selectedOptions.length !== 1 ? 's' : ''} selected`}
+            ` queen${selectedOptions.length !== 1 ? 's' : ''} selected`}
       </div>
       <div
         aria-controls={ARIA_ID_TAG_CONTROL}
@@ -237,7 +237,7 @@ export default function TagInput({
             <span
               key={option}
               role="button"
-              aria-label={`Remove tag "${option}"`}
+              aria-label={`Remove queen "${option}"`}
               className={clsx(
                 'cursor-pointer select-none',
                 'whitespace-nowrap',

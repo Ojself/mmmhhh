@@ -21,7 +21,6 @@ import { toastSuccess, toastWarning } from '@/toast';
 import { getDimensionsFromSize } from '@/utility/size';
 import ImageBlurFallback from '@/components/ImageBlurFallback';
 import { BLUR_ENABLED } from '@/site/config';
-import { Tags, sortTagsObjectWithoutFavs } from '@/tag';
 import { formatCount, formatCountDescriptive } from '@/utility/string';
 import { AiContent } from '../ai/useAiImageQueries';
 import AiButton from '../ai/AiButton';
@@ -29,6 +28,7 @@ import Spinner from '@/components/Spinner';
 import { getNextImageUrlForRequest } from '@/services/next-image';
 import useDelay from '@/utility/useDelay';
 import usePreventNavigation from '@/utility/usePreventNavigation';
+import { Queens, sortQueensObjectWithoutFavs } from '@/queen';
 
 const THUMBNAIL_SIZE = 300;
 
@@ -36,7 +36,7 @@ export default function PhotoForm({
   initialPhotoForm,
   updatedExifData,
   type = 'create',
-  uniqueTags,
+  uniqueQueens,
   aiContent,
   debugBlur,
   onTitleChange,
@@ -46,7 +46,7 @@ export default function PhotoForm({
   initialPhotoForm: Partial<PhotoFormData>
   updatedExifData?: Partial<PhotoFormData>
   type?: 'create' | 'edit'
-  uniqueTags?: Tags
+  uniqueQueens?: Queens
   aiContent?: AiContent
   setImageData?: (imageData: string) => void
   debugBlur?: boolean
@@ -150,10 +150,10 @@ export default function PhotoForm({
   [aiContent?.caption]);
 
   useEffect(() =>
-    setFormData(data => aiContent?.tags
-      ? { ...data, tags: aiContent?.tags }
+    setFormData(data => aiContent?.queens
+      ? { ...data, queens: aiContent?.queens }
       : data),
-  [aiContent?.tags]);
+  [aiContent?.queens]);
 
   useEffect(() =>
     setFormData(data => aiContent?.semanticDescription
@@ -171,8 +171,8 @@ export default function PhotoForm({
       return aiContent?.isLoadingTitle;
     case 'caption':
       return aiContent?.isLoadingCaption;
-    case 'tags':
-      return aiContent?.isLoadingTags;
+    case 'queens':
+      return aiContent?.isLoadingQueens;
     case 'semanticDescription':
       return aiContent?.isLoadingSemantic;
     default:
@@ -197,11 +197,11 @@ export default function PhotoForm({
           shouldConfirm={Boolean(formData.caption)}
           className="h-full"
         />;
-      case 'tags':
+      case 'queens':
         return <AiButton
           aiContent={aiContent}
-          requestFields={['tags']}
-          shouldConfirm={Boolean(formData.tags)}
+          requestFields={['queens']}
+          shouldConfirm={Boolean(formData.queens)}
           className="h-full"
         />;
       case 'semanticDescription':
@@ -283,11 +283,11 @@ export default function PhotoForm({
         {/* Fields */}
         <div className="space-y-6">
           {FORM_METADATA_ENTRIES(
-            sortTagsObjectWithoutFavs(uniqueTags ?? [])
-              .map(({ tag, count }) => ({
-                value: tag,
+            sortQueensObjectWithoutFavs(uniqueQueens ?? [])
+              .map(({ queen, count }) => ({
+                value: queen,
                 annotation: formatCount(count),
-                annotationAria: formatCountDescriptive(count, 'tagged'),
+                annotationAria: formatCountDescriptive(count, 'queened'),
               })),
             aiContent !== undefined,
           )
@@ -297,7 +297,7 @@ export default function PhotoForm({
               required,
               selectOptions,
               selectOptionsDefaultLabel,
-              tagOptions,
+              queenOptions,
               readOnly,
               validate,
               validateStringMaxLength,
@@ -338,7 +338,7 @@ export default function PhotoForm({
                   }}
                   selectOptions={selectOptions}
                   selectOptionsDefaultLabel={selectOptionsDefaultLabel}
-                  tagOptions={tagOptions}
+                  queenOptions={queenOptions}
                   required={required}
                   readOnly={readOnly}
                   capitalize={capitalize}

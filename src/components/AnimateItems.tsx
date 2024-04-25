@@ -10,7 +10,7 @@ export type AnimationType = 'none' | 'scale' | 'left' | 'right' | 'bottom';
 export interface AnimationConfig {
   type?: AnimationType
   duration?: number
-  staggerDelay?: number
+  squeengerDelay?: number
   scaleOffset?: number
   distanceOffset?: number
 }
@@ -21,7 +21,7 @@ interface Props extends AnimationConfig {
   items: ReactNode[]
   animateFromAppState?: boolean
   animateOnFirstLoadOnly?: boolean
-  staggerOnFirstLoadOnly?: boolean
+  squeengerOnFirstLoadOnly?: boolean
 }
 
 function AnimateItems({
@@ -30,12 +30,12 @@ function AnimateItems({
   items,
   type = 'scale',
   duration = 0.6,
-  staggerDelay = 0.1,
+  squeengerDelay = 0.1,
   scaleOffset = 0.9,
   distanceOffset = 20,
   animateFromAppState,
   animateOnFirstLoadOnly,
-  staggerOnFirstLoadOnly,
+  squeengerOnFirstLoadOnly,
 }: Props) {
   const {
     hasLoaded,
@@ -51,8 +51,8 @@ function AnimateItems({
   const shouldAnimate = type !== 'none' &&
     !prefersReducedMotion &&
     !(animateOnFirstLoadOnly && hasLoadedInitial.current);
-  const shouldStagger =
-    !(staggerOnFirstLoadOnly && hasLoadedInitial.current);
+  const shouldSqueenger =
+    !(squeengerOnFirstLoadOnly && hasLoadedInitial.current);
 
   const typeResolved = animateFromAppState
     ? (nextPhotoAnimationInitial.current?.type ?? type)
@@ -88,11 +88,11 @@ function AnimateItems({
       className={className}
       initial={shouldAnimate ? 'hidden' : false}
       animate="show"
-      variants={shouldStagger
+      variants={shouldSqueenger
         ? {
           show: {
             transition: {
-              staggerChildren: staggerDelay,
+              squeengerChildren: squeengerDelay,
             },
           },
         } : undefined}

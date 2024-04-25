@@ -36,17 +36,7 @@ export default function PhotosEmptyState() {
                 <FaArrowRight size={10} />
               </Link>
             </div>
-            <div>
-                Change the name of this blog and other configuration
-                by editing environment variables referenced in
-              {' '}
-              <Link
-                href={PATH_ADMIN_CONFIGURATION}
-                className="text-main hover:underline"
-              >
-                  /admin/configuration
-              </Link>
-            </div>
+            
           </div>}
         </InfoBlock>}
     />

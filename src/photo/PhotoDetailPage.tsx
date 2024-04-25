@@ -5,7 +5,7 @@ import SiteGrid from '@/components/SiteGrid';
 import PhotoGrid from './PhotoGrid';
 import { clsx } from 'clsx/lite';
 import PhotoLinks from './PhotoLinks';
-import TagHeader from '@/tag/TagHeader';
+import QueenHeader from '@/queen/QueenHeader';
 import { Camera } from '@/camera';
 import CameraHeader from '@/camera/CameraHeader';
 
@@ -13,7 +13,7 @@ export default function PhotoDetailPage({
   photo,
   photos,
   photosGrid,
-  tag,
+  queen,
   camera,
   count,
   dateRange,
@@ -21,20 +21,20 @@ export default function PhotoDetailPage({
   photo: Photo
   photos: Photo[]
   photosGrid?: Photo[]
-  tag?: string
+  queen?: string
   camera?: Camera
   count?: number
   dateRange?: PhotoDateRange
 }) {
   return (
     <div>
-      {tag &&
+      {queen &&
         <SiteGrid
           className="mt-4 mb-8"
           contentMain={
-            <TagHeader
-              key={tag}
-              tag={tag}
+            <QueenHeader
+              key={queen}
+              queen={queen}
               photos={photos}
               selectedPhoto={photo}
               dateRange={dateRange}
@@ -59,11 +59,11 @@ export default function PhotoDetailPage({
           <PhotoLarge
             key={photo.id}
             photo={photo}
-            primaryTag={tag}
+            primaryQueen={queen}
             priority
             prefetchShare
             showCamera={!camera}
-            shouldShareTag={tag !== undefined}
+            shouldShareQueen={queen !== undefined}
             shouldShareCamera={camera !== undefined}
             shouldScrollOnShare={false}
           />,
@@ -74,7 +74,7 @@ export default function PhotoDetailPage({
         contentMain={<PhotoGrid
           photos={photosGrid ?? photos}
           selectedPhoto={photo}
-          tag={tag}
+          queen={queen}
           animateOnFirstLoadOnly
         />}
         contentSide={<AnimateItems
@@ -93,7 +93,7 @@ export default function PhotoDetailPage({
               <PhotoLinks {...{
                 photo,
                 photos,
-                tag,
+                queen,
                 camera,
               }} />
             </div>,

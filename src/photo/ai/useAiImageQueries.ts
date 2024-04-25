@@ -37,10 +37,10 @@ export default function useAiImageQueries(
   ] = useAiImageQuery(imageData, 'caption');
 
   const [
-    requestTags,
-    tags,
-    isLoadingTags,
-  ] = useAiImageQuery(imageData, 'tags');
+    requestQueens,
+    queens,
+    isLoadingQueens,
+  ] = useAiImageQuery(imageData, 'queens');
 
   const [
     requestSemantic,
@@ -56,7 +56,7 @@ export default function useAiImageQueries(
   const isLoading =
     isLoadingTitle ||
     isLoadingCaption ||
-    isLoadingTags ||
+    isLoadingQueens ||
     isLoadingSemantic;
 
   const hasRunAllQueriesOnce = useRef(false);
@@ -87,13 +87,13 @@ export default function useAiImageQueries(
         requestCaption();
       }
     }
-    if (fields.includes('tags')) { requestTags(); }
+    if (fields.includes('queens')) { requestQueens(); }
     if (fields.includes('semantic')) { requestSemantic(); }
   }, [
     requestTitleCaption,
     requestTitle,
     requestCaption,
-    requestTags,
+    requestQueens,
     requestSemantic,
     resetTitle,
     resetTitleSolo,
@@ -113,13 +113,13 @@ export default function useAiImageQueries(
     request,
     title,
     caption,
-    tags,
+    queens,
     semanticDescription,
     isReady,
     isLoading,
     isLoadingTitle,
     isLoadingCaption,
-    isLoadingTags,
+    isLoadingQueens,
     isLoadingSemantic,
     setImageData,
   };

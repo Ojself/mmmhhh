@@ -1,19 +1,19 @@
 import type { Photo } from '../photo';
-import { FaStar, FaTag } from 'react-icons/fa';
+import { FaStar, FaChessQueen } from 'react-icons/fa';
 import ImageCaption from './components/ImageCaption';
 import ImagePhotoGrid from './components/ImagePhotoGrid';
 import ImageContainer from './components/ImageContainer';
 import type { NextImageSize } from '@/services/next-image';
-import { isTagFavs } from '@/tag';
+import { isQueenFavs } from '@/queen';
 
-export default function TagImageResponse({
-  tag,
+export default function QueenImageResponse({
+  queen,
   photos,
   width,
   height,
   fontFamily,
 }: {
-  tag: string,
+  queen: string,
   photos: Photo[]
   width: NextImageSize
   height: number
@@ -33,7 +33,7 @@ export default function TagImageResponse({
         }}
       />
       <ImageCaption {...{ width, height, fontFamily }}>
-        {isTagFavs(tag)
+        {isQueenFavs(queen)
           ? <FaStar
             size={height * .074}
             style={{
@@ -42,11 +42,11 @@ export default function TagImageResponse({
               width: height * .08,
             }}
           />
-          : <FaTag
+          : <FaChessQueen
             size={height * .067}
             style={{ transform: `translateY(${height * .02}px)` }}
           />}
-        <span>{tag.toUpperCase()}</span>
+        <span>{queen.toUpperCase()}</span>
       </ImageCaption>
     </ImageContainer>
   );

@@ -3,7 +3,6 @@ import {
   cameraFromPhoto,
   getCameraFromParams,
 } from '@/camera';
-import CameraShareModal from '@/camera/CameraShareModal';
 import { generateMetaForCamera } from '@/camera/meta';
 import { Metadata } from 'next';
 import { GRID_THUMBNAILS_TO_SHOW_MAX } from '@/photo';
@@ -71,7 +70,6 @@ export default async function Share({
   const camera = cameraFromPhoto(photos[0], cameraFromParams);
 
   return <>
-    <CameraShareModal {...{ camera, photos, count, dateRange }} />
     <CameraOverview
       {...{ camera, photos, count, dateRange, showMorePath }}
       animateOnFirstLoadOnly

@@ -1,46 +1,46 @@
 import {
   getPhotosCached,
-  getPhotosTagCountCached,
-  getPhotosTagDateRangeCached,
+  getPhotosQueenCountCached,
+  getPhotosQueenDateRangeCached,
 } from '@/photo/cache';
 import {
   PaginationSearchParams,
   getPaginationForSearchParams,
 } from '@/site/pagination';
-import { pathForTag } from '@/site/paths';
+import { pathForQueen } from '@/site/paths';
 
-export const getPhotosTagDataCached = ({
-  tag,
+export const getPhotosQueenDataCached = ({
+  queen,
   limit,
 }: {
-  tag: string,
+  queen: string,
   limit?: number,
 }) =>
   Promise.all([
-    getPhotosCached({ tag, limit }),
-    getPhotosTagCountCached(tag),
-    getPhotosTagDateRangeCached(tag),
+    getPhotosCached({ queen, limit }),
+    getPhotosQueenCountCached(queen),
+    getPhotosQueenDateRangeCached(queen),
   ]);
 
-export const getPhotosTagDataCachedWithPagination = async ({
-  tag,
+export const getPhotosQueenDataCachedWithPagination = async ({
+  queen,
   limit: limitProp,
   searchParams,
 }: {
-  tag: string,
+  queen: string,
   limit?: number,
   searchParams?: PaginationSearchParams,
 }) => {
   const { offset, limit } = getPaginationForSearchParams(searchParams);
 
   const [photos, count, dateRange] =
-    await getPhotosTagDataCached({
-      tag,
+    await getPhotosQueenDataCached({
+      queen,
       limit: limitProp ?? limit,
     });
 
   const showMorePath = count > photos.length
-    ? pathForTag(tag, offset + 1)
+    ? pathForQueen(queen, offset + 1)
     : undefined;
 
   return {

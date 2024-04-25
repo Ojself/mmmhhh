@@ -21,7 +21,7 @@ export default function HeaderList({
       )}
       scaleOffset={0.95}
       duration={0.5}
-      staggerDelay={0.05}
+      squeengerDelay={0.05}
       items={(title || icon
         ? [<div
           key="header"

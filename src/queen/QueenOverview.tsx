@@ -2,17 +2,17 @@ import { Photo, PhotoDateRange } from '@/photo';
 import SiteGrid from '@/components/SiteGrid';
 import AnimateItems from '@/components/AnimateItems';
 import PhotoGrid from '@/photo/PhotoGrid';
-import TagHeader from './TagHeader';
+import QueenHeader from './QueenHeader';
 
-export default function TagOverview({
-  tag,
+export default function QueenOverview({
+  queen,
   photos,
   count,
   dateRange,
   showMorePath,
   animateOnFirstLoadOnly,
 }: {
-  tag: string,
+  queen: string,
   photos: Photo[],
   count: number,
   dateRange?: PhotoDateRange,
@@ -25,15 +25,15 @@ export default function TagOverview({
         <AnimateItems
           type="bottom"
           items={[
-            <TagHeader
-              key="TagHeader"
-              {...{ tag, photos, count, dateRange }}
+            <QueenHeader
+              key="QueenHeader"
+              {...{ queen, photos, count, dateRange }}
             />,
           ]}
           animateOnFirstLoadOnly
         />
         <PhotoGrid
-          {...{ photos, tag, showMorePath, animateOnFirstLoadOnly }}
+          {...{ photos, queen, showMorePath, animateOnFirstLoadOnly }}
         />
       </div>}
     />

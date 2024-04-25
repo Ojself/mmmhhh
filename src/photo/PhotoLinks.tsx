@@ -18,13 +18,13 @@ const ANIMATION_RIGHT: AnimationConfig = { type: 'right', duration: 0.3 };
 export default function PhotoLinks({
   photo,
   photos,
-  tag,
+  queen,
   camera,
   
 }: {
   photo: Photo
   photos: Photo[]
-  tag?: string
+  queen?: string
   camera?: Camera
   
 }) {
@@ -47,7 +47,7 @@ export default function PhotoLinks({
           if (previousPhoto) {
             setNextPhotoAnimation?.(ANIMATION_RIGHT);
             router.push(
-              pathForPhoto(previousPhoto, tag, camera),
+              pathForPhoto(previousPhoto, queen, camera),
               { scroll: false },
             );
           }
@@ -57,7 +57,7 @@ export default function PhotoLinks({
           if (nextPhoto) {
             setNextPhotoAnimation?.(ANIMATION_LEFT);
             router.push(
-              pathForPhoto(nextPhoto, tag, camera),
+              pathForPhoto(nextPhoto, queen, camera),
               { scroll: false },
             );
           }
@@ -73,7 +73,7 @@ export default function PhotoLinks({
     setNextPhotoAnimation,
     previousPhoto,
     nextPhoto,
-    tag,
+    queen,
     camera,
     
   ]);
@@ -83,7 +83,7 @@ export default function PhotoLinks({
       <PhotoLink
         photo={previousPhoto}
         nextPhotoAnimation={ANIMATION_RIGHT}
-        tag={tag}
+        queen={queen}
         camera={camera}
         
         prefetch
@@ -93,7 +93,7 @@ export default function PhotoLinks({
       <PhotoLink
         photo={nextPhoto}
         nextPhotoAnimation={ANIMATION_LEFT}
-        tag={tag}
+        queen={queen}
         camera={camera}
         
         prefetch

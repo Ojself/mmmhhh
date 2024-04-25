@@ -1,12 +1,12 @@
 import AdminNav from '@/admin/AdminNav';
 import {
   getPhotosCountIncludingHiddenCached,
-  getUniqueTagsCached,
+  getUniqueQueensCached,
 } from '@/photo/cache';
 import { getStorageUploadUrlsNoStore } from '@/services/storage/cache';
 import {
   PATH_ADMIN_PHOTOS,
-  PATH_ADMIN_TAGS,
+  PATH_ADMIN_QUEENS,
   PATH_ADMIN_UPLOADS,
 } from '@/site/paths';
 
@@ -18,7 +18,7 @@ export default async function AdminLayout({
   const [
     countPhotos,
     countUploads,
-    countTags,
+    countQueens,
   ] = await Promise.all([
     getPhotosCountIncludingHiddenCached(),
     getStorageUploadUrlsNoStore()
@@ -27,7 +27,7 @@ export default async function AdminLayout({
         console.error(`Error getting blob upload urls: ${e}`);
         return 0;
       }),
-    getUniqueTagsCached().then(tags => tags.length),
+    getUniqueQueensCached().then(queens => queens.length),
   ]);
 
   const navItemPhotos = {
@@ -42,16 +42,16 @@ export default async function AdminLayout({
     count: countUploads,
   };
 
-  const navItemTags = {
-    label: 'Tags',
-    href: PATH_ADMIN_TAGS,
-    count: countTags,
+  const navItemQueens = {
+    label: 'Queens',
+    href: PATH_ADMIN_QUEENS,
+    count: countQueens,
   };
 
   const navItems = [navItemPhotos];
 
   if (countUploads > 0) { navItems.push(navItemUploads); }
-  if (countTags > 0) { navItems.push(navItemTags); }
+  if (countQueens > 0) { navItems.push(navItemQueens); }
 
   return (
     <div className="mt-4 space-y-5">

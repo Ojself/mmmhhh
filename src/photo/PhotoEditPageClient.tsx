@@ -13,17 +13,17 @@ import { useFormState } from 'react-dom';
 import { areSimpleObjectsEqual } from '@/utility/object';
 import IconGrSync from '@/site/IconGrSync';
 import { getExifDataAction } from './actions';
-import { Tags } from '@/tag';
+import { Queens } from '@/queen';
 import AiButton from './ai/AiButton';
 import usePhotoFormParent from './form/usePhotoFormParent';
 
 export default function PhotoEditPageClient({
   photo,
-  uniqueTags,
+  uniqueQueens,
   hasAiTextGeneration,
 }: {
   photo: Photo
-  uniqueTags: Tags
+  uniqueQueens: Queens
   hasAiTextGeneration: boolean
 }) {
   const seedExifData = { url: photo.url };
@@ -81,7 +81,7 @@ export default function PhotoEditPageClient({
         updatedExifData={hasExifDataBeenFound
           ? updatedExifData
           : undefined}
-        uniqueTags={uniqueTags}
+        uniqueQueens={uniqueQueens}
         aiContent={hasAiTextGeneration ? aiContent : undefined}
         onTitleChange={setUpdatedTitle}
         onTextContentChange={setHasTextContent}

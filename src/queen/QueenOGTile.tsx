@@ -1,12 +1,12 @@
 import { Photo, PhotoDateRange } from '@/photo';
-import { absolutePathForTagImage, pathForTag } from '@/site/paths';
+import { absolutePathForQueenImage, pathForQueen } from '@/site/paths';
 import OGTile from '@/components/OGTile';
-import { descriptionForTaggedPhotos, titleForTag } from '.';
+import { descriptionForqueenedPhotos, titleForQueen } from '.';
 
 export type OGLoadingState = 'unloaded' | 'loading' | 'loaded' | 'failed';
 
-export default function TagOGTile({
-  tag,
+export default function QueenOGTile({
+  queen,
   photos,
   loadingState: loadingStateExternal,
   riseOnHover,
@@ -16,7 +16,7 @@ export default function TagOGTile({
   count,
   dateRange,
 }: {
-  tag: string
+  queen: string
   photos: Photo[]
   loadingState?: OGLoadingState
   onLoad?: () => void
@@ -28,10 +28,10 @@ export default function TagOGTile({
 }) {
   return (
     <OGTile {...{
-      title: titleForTag(tag, photos, count),
-      description: descriptionForTaggedPhotos(photos, true, count, dateRange),
-      path: pathForTag(tag),
-      pathImageAbsolute: absolutePathForTagImage(tag),
+      title: titleForQueen(queen, photos, count),
+      description: descriptionForqueenedPhotos(photos, true, count, dateRange),
+      path: pathForQueen(queen),
+      pathImageAbsolute: absolutePathForQueenImage(queen),
       loadingState: loadingStateExternal,
       onLoad,
       onFail,

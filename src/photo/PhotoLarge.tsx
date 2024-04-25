@@ -10,40 +10,40 @@ import ImageLarge from '@/components/ImageLarge';
 import { clsx } from 'clsx/lite';
 import Link from 'next/link';
 import { pathForPhoto, pathForPhotoShare } from '@/site/paths';
-import PhotoTags from '@/tag/PhotoTags';
+import PhotoQueens from '@/queen/PhotoQueens';
 import ShareButton from '@/components/ShareButton';
 import PhotoCamera from '../camera/PhotoCamera';
 import { cameraFromPhoto } from '@/camera';
-import { sortTags } from '@/tag';
+import { sortQueens } from '@/queen';
 import AdminPhotoMenu from '@/admin/AdminPhotoMenu';
 import { Suspense } from 'react';
 import DivDebugBaselineGrid from '@/components/DivDebugBaselineGrid';
 
 export default function PhotoLarge({
   photo,
-  primaryTag,
+  primaryQueen,
   priority,
   prefetchShare,
   showCamera = true,
-  shouldShareTag,
+  shouldShareQueen,
   shouldShareCamera,
   shouldScrollOnShare,
 }: {
   photo: Photo
-  primaryTag?: string
+  primaryQueen?: string
   priority?: boolean
   prefetchShare?: boolean
   showCamera?: boolean
-  shouldShareTag?: boolean
+  shouldShareQueen?: boolean
   shouldShareCamera?: boolean
   shouldScrollOnShare?: boolean
 }) {
-  const tags = sortTags(photo.tags, primaryTag);
+  const queens = sortQueens(photo.queens, primaryQueen);
 
   const camera = cameraFromPhoto(photo);
 
   const showCameraContent = showCamera && shouldShowCameraDataForPhoto(photo);
-  const showTagsContent = tags.length > 0;
+  const showQueensContent = queens.length > 0;
   const showExifContent = shouldShowExifDataForPhoto(photo);
 
   return (
@@ -52,7 +52,7 @@ export default function PhotoLarge({
         <ImageLarge
           className="w-full"
           alt={altTextForPhoto(photo)}
-          href={pathForPhoto(photo, primaryTag)}
+          href={pathForPhoto(photo, primaryQueen)}
           src={photo.url}
           aspectRatio={photo.aspectRatio}
           blurData={photo.blurData}
@@ -88,15 +88,15 @@ export default function PhotoLarge({
                 <div className="uppercase">
                   {photo.caption}
                 </div>}
-              {(showCameraContent || showTagsContent) &&
+              {(showCameraContent || showQueensContent) &&
                 <div>
                   {showCameraContent &&
                     <PhotoCamera
                       camera={camera}
                       contrast="medium"
                     />}
-                  {showTagsContent &&
-                    <PhotoTags tags={tags} contrast="medium" />}
+                  {showQueensContent &&
+                    <PhotoQueens queens={queens} contrast="medium" />}
                 </div>}
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function PhotoLarge({
               <ShareButton
                 path={pathForPhotoShare(
                   photo,
-                  shouldShareTag ? primaryTag : undefined,
+                  shouldShareQueen ? primaryQueen : undefined,
                   shouldShareCamera ? camera : undefined,
                 )}
                 prefetch={prefetchShare}

@@ -1,7 +1,7 @@
 import { PATH_ADMIN } from '@/site/paths';
 import { extractExifDataFromBlobPath } from '@/photo/server';
 import { redirect } from 'next/navigation';
-import { getUniqueTagsCached } from '@/photo/cache';
+import { getUniqueQueensCached } from '@/photo/cache';
 import UploadPageClient from '@/photo/UploadPageClient';
 import {
   AI_TEXT_AUTO_GENERATED_FIELDS,
@@ -20,7 +20,7 @@ export default async function UploadPage({ params: { uploadPath } }: Params) {
 
   if (!photoFormExif) { redirect(PATH_ADMIN); }
 
-  const uniqueTags = await getUniqueTagsCached();
+  const uniqueQueens = await getUniqueQueensCached();
 
   const hasAiTextGeneration = AI_TEXT_GENERATION_ENABLED;
 
@@ -30,7 +30,7 @@ export default async function UploadPage({ params: { uploadPath } }: Params) {
     <UploadPageClient {...{
       blobId,
       photoFormExif,
-      uniqueTags,
+      uniqueQueens,
       hasAiTextGeneration,
       textFieldsToAutoGenerate,
     }} />

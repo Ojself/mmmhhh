@@ -6,18 +6,18 @@ import { Camera } from '@/camera';
 
 export default function PhotoShareModal({
   photo,
-  tag,
+  queen,
   camera,
 }: {
   photo: Photo
-  tag?: string
+  queen?: string
   camera?: Camera
 }) {
   return (
     <ShareModal
       title="Share Photo"
-      pathShare={absolutePathForPhoto(photo, tag, camera)}
-      pathClose={pathForPhoto(photo, tag, camera)}
+      pathShare={absolutePathForPhoto(photo, queen, camera)}
+      pathClose={pathForPhoto(photo, queen, camera)}
     >
       <PhotoOGTile photo={photo} />
     </ShareModal>

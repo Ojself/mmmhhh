@@ -21,7 +21,7 @@ export default function middleware(req: NextRequest, res:NextResponse) {
       req.url,
     ));
   } else if (/^\/t\/(.)+$/.test(pathname)) {
-    // Accept /t/* paths, but serve /tag/*
+    // Accept /t/* paths, but serve /queen/*
     const matches = pathname.match(/^\/t\/(.+)$/);
     return NextResponse.rewrite(new URL(
       `${PREFIX_TAG}/${matches?.[1]}`,

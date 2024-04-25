@@ -1,20 +1,20 @@
 import { Cameras, sortCamerasWithCount } from '@/camera';
 import PhotoCamera from '@/camera/PhotoCamera';
 import HeaderList from '@/components/HeaderList';
-import PhotoTag from '@/tag/PhotoTag';
-import { FaTag } from 'react-icons/fa';
+import PhotoQueen from '@/queen/PhotoQueen';
+import { FaChessQueen } from 'react-icons/fa';
 import { IoMdCamera } from 'react-icons/io';
 import { PhotoDateRange, dateRangeForPhotos, photoQuantityText } from '.';
-import { TAG_FAVS, Tags } from '@/tag';
-import FavsTag from '../tag/FavsTag';
+import FavsQueen from '../queen/FavsQueen';
+import { QUEEN_FAVS, Queens } from '@/queen';
 
 export default function PhotoGridSidebar({
-  tags,
+  queens,
   cameras,
   photosCount,
   photosDateRange,
 }: {
-  tags: Tags
+  queens: Queens
   cameras: Cameras
   photosCount: number
   photosDateRange?: PhotoDateRange
@@ -23,20 +23,20 @@ export default function PhotoGridSidebar({
 
   return (
     <>
-      {tags.length > 0 && <HeaderList
-        title='Tags'
-        icon={<FaTag size={12} className="text-icon" />}
-        items={tags.map(({ tag, count }) => tag === TAG_FAVS
-          ? <FavsTag
-            key={TAG_FAVS}
+      {queens.length > 0 && <HeaderList
+        title='Queens'
+        icon={<FaChessQueen size={12} className="text-icon" />}
+        items={queens.map(({ queen, count }) => queen === QUEEN_FAVS
+          ? <FavsQueen
+            key={QUEEN_FAVS}
             countOnHover={count}
             type="icon-last"
             contrast="low"
             badged
           />
-          : <PhotoTag
-            key={tag}
-            tag={tag}
+          : <PhotoQueen
+            key={queen}
+            queen={queen}
             type="text-only"
             countOnHover={count}
             contrast="low"
