@@ -1,13 +1,6 @@
 import { SHOW_EXIF_DATA } from '@/site/config';
 import { ABSOLUTE_PATH_FOR_HOME_IMAGE } from '@/site/paths';
 import { formatDateFromPostgresString } from '@/utility/date';
-import {
-  formatAperture,
-  formatIso,
-  formatExposureCompensation,
-  formatExposureTime,
-  formatFocalLength,
-} from '@/utility/exif';
 import camelcaseKeys from 'camelcase-keys';
 import type { Metadata } from 'next';
 
@@ -208,19 +201,11 @@ export const dateRangeForPhotos = (
   return { start, end, description };
 };
 
-const photoHasCameraData = (photo: Photo) =>
-  Boolean(photo.make);
-
 const photoHasExifData = (photo: Photo) =>
-  Boolean(photo.focalLength) ||
-  Boolean(photo.focalLengthIn35MmFormat) ||
   Boolean(photo.fNumberFormatted) ||
-  Boolean(photo.isoFormatted) ||
-  Boolean(photo.exposureTimeFormatted) ||
-  Boolean(photo.exposureCompensationFormatted);
+  Boolean(photo.isoFormatted);
 
-export const shouldShowCameraDataForPhoto = (photo: Photo) =>
-  SHOW_EXIF_DATA && photoHasCameraData(photo);
+export const shouldShowCameraDataForPhoto = () => false;
 
 export const shouldShowExifDataForPhoto = (photo: Photo) =>
   SHOW_EXIF_DATA && photoHasExifData(photo);

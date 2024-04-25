@@ -18,7 +18,7 @@ export default function CameraHeader({
   count?: number
   dateRange?: PhotoDateRange
 }) {
-  const camera = cameraFromPhoto(photos[0], cameraProp);
+  const camera = cameraFromPhoto(cameraProp);
   return (
     <PhotoSetHeader
       entity={<PhotoCamera {...{ camera }} contrast="high" hideAppleIcon />}

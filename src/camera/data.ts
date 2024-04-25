@@ -19,8 +19,8 @@ export const getPhotosCameraDataCached = ({
 }) =>
   Promise.all([
     getPhotosCached({ camera, limit }),
-    getPhotosCameraCountCached(camera),
-    getPhotosCameraDateRangeCached(camera),
+    getPhotosCameraCountCached(),
+    getPhotosCameraDateRangeCached(),
   ]);
 
 export const getPhotosCameraDataCachedWithPagination = async ({

@@ -1,7 +1,6 @@
 import {
   Photo,
   altTextForPhoto,
-  shouldShowCameraDataForPhoto,
   shouldShowExifDataForPhoto,
   titleForPhoto,
 } from '.';
@@ -24,7 +23,6 @@ export default function PhotoLarge({
   primaryQueen,
   priority,
   prefetchShare,
-  showCamera = true,
   shouldShareQueen,
   shouldShareCamera,
   shouldScrollOnShare,
@@ -33,16 +31,15 @@ export default function PhotoLarge({
   primaryQueen?: string
   priority?: boolean
   prefetchShare?: boolean
-  showCamera?: boolean
   shouldShareQueen?: boolean
   shouldShareCamera?: boolean
   shouldScrollOnShare?: boolean
 }) {
   const queens = sortQueens(photo.queens, primaryQueen);
 
-  const camera = cameraFromPhoto(photo);
+  const camera = cameraFromPhoto();
 
-  const showCameraContent = showCamera && shouldShowCameraDataForPhoto(photo);
+  const showCameraContent = false;
   const showQueensContent = queens.length > 0;
   const showExifContent = shouldShowExifDataForPhoto(photo);
 
@@ -118,10 +115,6 @@ export default function PhotoLarge({
                         </span>
                       </>}
                   </li>
-                  <li>{photo.fNumberFormatted}</li>
-                  <li>{photo.exposureTimeFormatted}</li>
-                  <li>{photo.isoFormatted}</li>
-                  <li>{photo.exposureCompensationFormatted ?? '0ev'}</li>
                 </ul>
               </>}
             <div className={clsx(

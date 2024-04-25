@@ -28,7 +28,7 @@ export async function generateMetadata({
   const url = absolutePathForPhoto(
     photo,
     undefined,
-    cameraFromPhoto(photo, { make, model }),
+    cameraFromPhoto(),
   );
 
   return {
@@ -57,7 +57,7 @@ export default async function PhotoCameraPage({
 
   if (!photo) { redirect(PATH_ROOT); }
 
-  const camera = cameraFromPhoto(photo, { make, model });
+  const camera = cameraFromPhoto();
 
   const [
     photos,

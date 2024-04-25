@@ -21,31 +21,28 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GridPage({ searchParams }: PaginationParams) {
-  const { offset, limit } = getPaginationForSearchParams(searchParams);
+  const { limit } = getPaginationForSearchParams(searchParams);
 
   const [
     photos,
-    photosCount,
     queens,
-    cameras,
+    /* @ts-ignore */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    count,
   ] = await Promise.all([
     getPhotosCached({ limit }),
     ...getPhotoSidebarDataCached(),
   ]);
+  
 
-  const showMorePath = photosCount > photos.length
-    ? pathForGrid(offset + 1)
-    : undefined;
   
   return (
     photos.length > 0
       ? <SiteGrid
-        contentMain={<PhotoGrid {...{ photos, showMorePath }} />}
+        contentMain={<PhotoGrid {...{ photos }} />}
         contentSide={<div className="sticky top-4 space-y-4 mt-[-4px]">
           <PhotoGridSidebar {...{
             queens,
-            cameras,
-            photosCount,
           }} />
         </div>}
         sideHiddenOnMobile

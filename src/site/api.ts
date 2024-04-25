@@ -31,8 +31,6 @@ export const formatPhotoForApi = (photo: Photo): PublicApiPhoto => ({
   id: photo.id,
   title: photo.title,
   url: absolutePathForPhoto(photo),
-  ...photo.make && { make: photo.make },
-  ...photo.model && { model: photo.model },
   ...photo.queens.length > 0 && { queens: photo.queens },
   takenAtNaive: formatDateFromPostgresString(photo.takenAtNaive),
   src: {

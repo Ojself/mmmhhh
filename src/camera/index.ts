@@ -1,4 +1,3 @@
-import type { Photo } from '@/photo';
 import { parameterize } from '@/utility/string';
 
 const CAMERA_PLACEHOLDER: Camera = { make: 'Camera', model: 'Model' };
@@ -48,12 +47,9 @@ export const sortCamerasWithCount = (
 };
 
 export const cameraFromPhoto = (
-  photo: Photo | undefined,
   fallback?: Camera,
 ): Camera =>
-  photo?.make && photo?.model
-    ? { make: photo.make, model: photo.model }
-    : fallback ?? CAMERA_PLACEHOLDER;
+  fallback ?? CAMERA_PLACEHOLDER;
 
 export const formatCameraText = (
   { make: makeRaw, model: modelRaw }: Camera,

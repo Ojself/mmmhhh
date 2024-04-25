@@ -4,19 +4,16 @@ import HeaderList from '@/components/HeaderList';
 import PhotoQueen from '@/queen/PhotoQueen';
 import { FaChessQueen } from 'react-icons/fa';
 import { IoMdCamera } from 'react-icons/io';
-import { PhotoDateRange, dateRangeForPhotos, photoQuantityText } from '.';
 import FavsQueen from '../queen/FavsQueen';
 import { QUEEN_FAVS, Queens } from '@/queen';
 
 export default function PhotoGridSidebar({
   queens,
   cameras,
-  photosCount,
   
 }: {
   queens: Queens
-  cameras: Cameras
-  photosCount: number
+  cameras?: Cameras
   
 }) {
   
@@ -43,7 +40,7 @@ export default function PhotoGridSidebar({
             badged
           />)}
       />}
-      {cameras.length > 0 && <HeaderList
+      {cameras && cameras.length > 0 && <HeaderList
         title="Cameras"
         icon={<IoMdCamera
           size={13}

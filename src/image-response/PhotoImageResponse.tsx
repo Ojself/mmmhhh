@@ -1,11 +1,9 @@
 import { Photo, shouldShowExifDataForPhoto } from '../photo';
-import { AiFillApple } from 'react-icons/ai';
 import ImageCaption from './components/ImageCaption';
 import ImagePhotoGrid from './components/ImagePhotoGrid';
 import ImageContainer from './components/ImageContainer';
 import { OG_TEXT_BOTTOM_ALIGNMENT } from '@/site/config';
 import { NextImageSize } from '@/services/next-image';
-import { cameraFromPhoto, formatCameraModelTextShort } from '@/camera';
 
 export default function PhotoImageResponse({
   photo,
@@ -18,9 +16,6 @@ export default function PhotoImageResponse({
   height: number
   fontFamily: string
 }) {
-  const model = photo.model
-    ? formatCameraModelTextShort(cameraFromPhoto(photo))
-    : undefined;
 
   return (
     <ImageContainer {...{ width, height }}>
@@ -32,14 +27,6 @@ export default function PhotoImageResponse({
       }} />
       {shouldShowExifDataForPhoto(photo) &&
         <ImageCaption {...{ width, height, fontFamily }}>
-          {photo.make === 'Apple' &&
-            <div style={{ display: 'flex' }}>
-              <AiFillApple />
-            </div>}
-          {model &&
-            <div style={{ display: 'flex' }}>
-              {model}
-            </div>}
           <div style={{ display: 'flex' }}>
             {photo.focalLengthFormatted}
           </div>

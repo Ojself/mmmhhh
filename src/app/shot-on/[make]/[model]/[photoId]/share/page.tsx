@@ -11,7 +11,7 @@ export default async function Share({
 
   if (!photo) { return redirect(PATH_ROOT); }
 
-  const camera = cameraFromPhoto(photo, { make, model });
+  const camera = cameraFromPhoto();
 
   return <PhotoShareModal {...{ photo, camera }} />;
 }

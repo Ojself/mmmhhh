@@ -238,12 +238,6 @@ export const convertFormDataToPhotoDbInsert = (
       ? parseFloat(photoForm.longitude)
       : undefined,
     
-    exposureTime: photoForm.exposureTime
-      ? parseFloat(photoForm.exposureTime)
-      : undefined,
-    exposureCompensation: photoForm.exposureCompensation
-      ? parseFloat(photoForm.exposureCompensation)
-      : undefined,
     priorityOrder: photoForm.priorityOrder
       ? parseFloat(photoForm.priorityOrder)
       : undefined,

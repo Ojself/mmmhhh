@@ -13,9 +13,9 @@ export default function usePreventNavigation(
       const grandParent = parent?.parentElement as HTMLElement | undefined;
       const targets = [target, parent, grandParent];
       if (
-        targets.some(target => target?.queenName === 'A') && (
+        targets.some(target => target?.tagName === 'A') && (
           !includeButtons ||
-          targets.some(target => target?.queenName === 'BUTTON')
+          targets.some(target => target?.tagName === 'BUTTON')
         )
       ) {
         if (enabled && !confirm(confirmation)) {

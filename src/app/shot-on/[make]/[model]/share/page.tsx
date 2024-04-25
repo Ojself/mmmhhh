@@ -67,7 +67,7 @@ export default async function Share({
     searchParams,
   });
 
-  const camera = cameraFromPhoto(photos[0], cameraFromParams);
+  const camera = cameraFromPhoto(cameraFromParams);
 
   return <>
     <CameraOverview

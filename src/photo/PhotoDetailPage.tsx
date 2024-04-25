@@ -62,7 +62,6 @@ export default function PhotoDetailPage({
             primaryQueen={queen}
             priority
             prefetchShare
-            showCamera={!camera}
             shouldShareQueen={queen !== undefined}
             shouldShareCamera={camera !== undefined}
             shouldScrollOnShare={false}

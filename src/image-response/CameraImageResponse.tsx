@@ -19,7 +19,7 @@ export default function CameraImageResponse({
   height: number
   fontFamily: string
 }) {
-  const camera = cameraFromPhoto(photos[0], cameraProp);
+  const camera = cameraFromPhoto(cameraProp);
   return (
     <ImageContainer {...{
       width,
