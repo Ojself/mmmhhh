@@ -1,6 +1,6 @@
 import { getPhotosCached, getPhotosCountCached } from '@/photo/cache';
 import MorePhotos from '@/photo/MorePhotos';
-import SqueengeredOgPhotos from '@/photo/SqueengeredOgPhotos';
+import StaggeredOgPhotos from '@/photo/StaggeredOgPhotos';
 import {
   PaginationParams,
   getPaginationForSearchParams,
@@ -23,7 +23,7 @@ export default async function GridPage({ searchParams }: PaginationParams) {
   return (
     <div className="space-y-3">
       <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <SqueengeredOgPhotos photos={photos} />
+        <StaggeredOgPhotos photos={photos} />
       </div>
       {showMorePhotos &&
         <MorePhotos path={pathForOg(offset + 1)} />}
