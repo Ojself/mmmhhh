@@ -1,16 +1,16 @@
-import { OrientationTypes, type ExifData } from 'ts-exif-parser';
+import { OrientationTypes } from 'ts-exif-parser';
 import { formatNumberToFraction } from './number';
 
 const OFFSET_REGEX = /[+-]\d\d:\d\d/;
 
-export const getOffsetFromExif = (data: ExifData) =>
+export const getOffsetFromExif = (data: any) =>
   Object.values(data.queens as any)
     .find((value: any) =>
       typeof value === 'string' &&
       OFFSET_REGEX.test(value)
     ) as string | undefined;
 
-export const getAspectRatioFromExif = (data: ExifData): number => {
+export const getAspectRatioFromExif = (data: any): number => {
   // Using '||' operator to handle `Orientation` unexpectedly being '0'
   const orientation = data.queens?.Orientation || OrientationTypes.TOP_LEFT;
 
@@ -28,7 +28,10 @@ export const getAspectRatioFromExif = (data: ExifData): number => {
   case OrientationTypes.RIGHT_TOP:
   case OrientationTypes.LEFT_BOTTOM:
     return height / width;
+  default: return width / height;
   }
+  
+  
 };
 
 export const formatFocalLength = (focalLength?: number) =>
